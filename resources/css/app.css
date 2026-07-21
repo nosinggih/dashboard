@@ -1,0 +1,12 @@
+/* resources/css/app.css — entry point
+ * tokens.css -> variabel token. base.css/components.css memakai @layer agar
+ * Tailwind menempatkannya di posisi cascade yang benar (base < components < utilities)
+ * meski di-@import lebih dulu (aturan CSS: @import wajib di baris paling atas).
+ */
+@import './tokens.css';
+@import './base.css';
+@import './components.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
