@@ -1,0 +1,52 @@
+/* resources/css/tokens.css
+ * Satu-satunya file yang diubah saat rebranding.
+ * Lihat DESIGN_SYSTEM.md bab 2.
+ */
+:root {
+  /* ===== BRAND (satu-satunya bagian yang diubah saat rebranding) ===== */
+  --color-brand-50:  #EEF6F5;
+  --color-brand-100: #D5EAE7;
+  --color-brand-300: #7FBFB8;
+  --color-brand-500: #2E7D74;   /* primary — teal tenang, kesan "trust" */
+  --color-brand-600: #256A62;
+  --color-brand-700: #1D554E;
+  --color-brand-900: #10312D;
+
+  /* ===== NEUTRAL (permukaan & teks) ===== */
+  --color-surface:      #F6F7F9;  /* background utama, BUKAN putih murni */
+  --color-surface-card: #FFFFFF;  /* kartu boleh putih karena area kecil */
+  --color-surface-sunken: #EEF0F3;/* area input / zebra table */
+  --color-border:       #E2E5EA;
+  --color-border-strong:#C9CED6;
+  --color-text-primary:  #1C2430; /* bukan hitam pekat — lebih nyaman */
+  --color-text-secondary:#5A6472;
+  --color-text-muted:    #8B94A3;
+
+  /* ===== SEMANTIC (versi muted, bukan neon) ===== */
+  --color-positive: #2F8A56;  --color-positive-bg: #E9F5EE;
+  --color-negative: #C24A4A;  --color-negative-bg: #FBEEEE;
+  --color-warning:  #B07A2A;  --color-warning-bg:  #FBF3E4;
+  --color-info:     #3C6EAF;  --color-info-bg:     #EBF2FA;
+
+  /* ===== SPACING & SHAPE ===== */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.08);
+  --shadow-modal: 0 8px 24px rgba(16,24,40,.16);
+
+  /* ===== MOTION ===== */
+  --ease-standard: cubic-bezier(.2,.6,.3,1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+}
+
+/* Dark mode disiapkan sejak awal (opsional diaktifkan) */
+[data-theme="dark"] {
+  --color-surface:      #14181F;
+  --color-surface-card: #1B212B;
+  --color-surface-sunken:#10141A;
+  --color-border:       #2A3240;
+  --color-text-primary: #E8ECF1;
+  --color-text-secondary:#A6B0BE;
+}

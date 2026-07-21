@@ -1,0 +1,7 @@
+/* resources/css/components.css
+ * Class .c-* hasil ekstraksi @apply untuk utility Tailwind yang berulang.
+ * Diisi mulai Fase 2. Dibungkus @layer components agar berada di antara
+ * base dan utilities pada cascade akhir.
+ */
+@layer components {
+}
