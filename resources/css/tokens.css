@@ -28,6 +28,10 @@
   --color-warning:  #B07A2A;  --color-warning-bg:  #FBF3E4;
   --color-info:     #3C6EAF;  --color-info-bg:     #EBF2FA;
 
+  /* ===== OVERLAY (scrim modal — RGBA langsung, bukan opacity modifier,
+     agar tidak butuh color-mix() yang tak didukung Safari 12) ===== */
+  --color-overlay: rgba(16, 49, 45, .5);
+
   /* ===== SPACING & SHAPE ===== */
   --radius-sm: 6px;
   --radius-md: 10px;

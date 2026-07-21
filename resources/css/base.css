@@ -79,6 +79,10 @@
     color: inherit;
   }
 
+  [x-cloak] {
+    display: none !important;
+  }
+
   /* ===== UTILITY ANGKA (WAJIB untuk semua nilai finansial) ===== */
   .u-num {
     font-variant-numeric: tabular-nums lining-nums;

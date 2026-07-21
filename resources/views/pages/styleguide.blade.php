@@ -284,6 +284,275 @@
                 <x-ui.alert variant="info">Fase 2 sedang dalam pengembangan aktif.</x-ui.alert>
             </div>
         </section>
+
+        {{-- ===== TABLE ===== --}}
+        <section class="mb-14" aria-labelledby="section-table">
+            <h2 id="section-table" class="text-h2 font-display text-ink mb-1">Tabel</h2>
+            <p class="text-sm text-ink-soft mb-6">Kolom angka selalu rata kanan + <code>.u-num</code>, nilai negatif pakai tanda minus (bukan kurung).</p>
+
+            <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Transaction table — varian <code>default</code></p>
+            <x-ui.table class="mb-8">
+                <x-ui.table.head>
+                    <x-ui.table.cell header>Tanggal</x-ui.table.cell>
+                    <x-ui.table.cell header>Deskripsi</x-ui.table.cell>
+                    <x-ui.table.cell header type="status">Status</x-ui.table.cell>
+                    <x-ui.table.cell header type="number">Nominal</x-ui.table.cell>
+                </x-ui.table.head>
+                @foreach ($transactions as $trx)
+                    <x-ui.table.row>
+                        <x-ui.table.cell label="Tanggal">{{ $trx['date'] }}</x-ui.table.cell>
+                        <x-ui.table.cell label="Deskripsi">
+                            <p class="text-ink">{{ $trx['description'] }}</p>
+                            <p class="text-xs text-ink-muted">{{ $trx['category'] }}</p>
+                        </x-ui.table.cell>
+                        <x-ui.table.cell type="status" label="Status">
+                            <x-ui.badge :variant="$trx['status']" size="sm">{{ $trx['statusLabel'] }}</x-ui.badge>
+                        </x-ui.table.cell>
+                        <x-ui.table.cell type="number" label="Nominal">
+                            <span class="{{ $trx['amount'] < 0 ? 'text-negative' : 'text-positive' }}">
+                                {{ $trx['amount'] < 0 ? '−' : '+' }}{{ number_format(abs($trx['amount']), 0, ',', '.') }}
+                            </span>
+                        </x-ui.table.cell>
+                    </x-ui.table.row>
+                @endforeach
+            </x-ui.table>
+
+            <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Data table — varian <code>striped</code>, sort indicator &amp; summary <code>&lt;tfoot&gt;</code></p>
+            <x-ui.table variant="striped" class="mb-8">
+                <x-ui.table.head>
+                    <x-ui.table.cell header>
+                        <span class="inline-flex items-center gap-1">Deskripsi <x-ui.icon name="arrow-up" :size="14" /></span>
+                    </x-ui.table.cell>
+                    <x-ui.table.cell header type="number">
+                        <span class="inline-flex items-center gap-1 justify-end w-full">Nominal <x-ui.icon name="arrow-down" :size="14" /></span>
+                    </x-ui.table.cell>
+                </x-ui.table.head>
+                @foreach ($transactions as $trx)
+                    <x-ui.table.row>
+                        <x-ui.table.cell label="Deskripsi">{{ $trx['description'] }}</x-ui.table.cell>
+                        <x-ui.table.cell type="number" label="Nominal">
+                            <span class="{{ $trx['amount'] < 0 ? 'text-negative' : 'text-positive' }}">
+                                {{ $trx['amount'] < 0 ? '−' : '+' }}{{ number_format(abs($trx['amount']), 0, ',', '.') }}
+                            </span>
+                        </x-ui.table.cell>
+                    </x-ui.table.row>
+                @endforeach
+                <x-ui.table.foot>
+                    <x-ui.table.cell>Total</x-ui.table.cell>
+                    <x-ui.table.cell type="number">{{ number_format($transactions->sum('amount'), 0, ',', '.') }}</x-ui.table.cell>
+                </x-ui.table.foot>
+            </x-ui.table>
+
+            <div class="grid gap-6 lg:grid-cols-2 mb-8">
+                <div>
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Varian <code>bordered</code>, size <code>sm</code></p>
+                    <x-ui.table variant="bordered" size="sm">
+                        <x-ui.table.head>
+                            <x-ui.table.cell header>Kategori</x-ui.table.cell>
+                            <x-ui.table.cell header type="number">Jumlah</x-ui.table.cell>
+                        </x-ui.table.head>
+                        <x-ui.table.row>
+                            <x-ui.table.cell>Operasional</x-ui.table.cell>
+                            <x-ui.table.cell type="number">3</x-ui.table.cell>
+                        </x-ui.table.row>
+                        <x-ui.table.row>
+                            <x-ui.table.cell>Pemasukan</x-ui.table.cell>
+                            <x-ui.table.cell type="number">2</x-ui.table.cell>
+                        </x-ui.table.row>
+                    </x-ui.table>
+                </div>
+
+                <div>
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Varian <code>card</code> — mobile-first</p>
+                    <x-ui.table variant="card">
+                        @foreach ($transactions->take(2) as $trx)
+                            <x-ui.table.row>
+                                <x-ui.table.cell label="Deskripsi">{{ $trx['description'] }}</x-ui.table.cell>
+                                <x-ui.table.cell type="number" label="Nominal">
+                                    <span class="{{ $trx['amount'] < 0 ? 'text-negative' : 'text-positive' }}">
+                                        {{ $trx['amount'] < 0 ? '−' : '+' }}{{ number_format(abs($trx['amount']), 0, ',', '.') }}
+                                    </span>
+                                </x-ui.table.cell>
+                            </x-ui.table.row>
+                        @endforeach
+                    </x-ui.table>
+                </div>
+            </div>
+
+            <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Pagination</p>
+            <x-ui.pagination :paginator="$paginator" />
+        </section>
+
+        {{-- ===== MODAL & DROPDOWN ===== --}}
+        <section class="mb-14" aria-labelledby="section-overlay">
+            <h2 id="section-overlay" class="text-h2 font-display text-ink mb-1">Modal &amp; Dropdown</h2>
+            <p class="text-sm text-ink-soft mb-6">Tutup via ESC, klik overlay, atau tombol ✕. Fokus terkunci di dalam modal saat terbuka.</p>
+
+            <div class="flex flex-wrap items-center gap-4 rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <x-ui.modal size="md" title="Ubah Profil">
+                    <x-slot:trigger>
+                        <x-ui.button variant="secondary">Buka Modal (md)</x-ui.button>
+                    </x-slot:trigger>
+                    <p>Konten modal ukuran medium (560px), berisi contoh form atau detail.</p>
+                </x-ui.modal>
+
+                <x-ui.modal size="full" title="Detail Transaksi">
+                    <x-slot:trigger>
+                        <x-ui.button variant="secondary">Buka Modal (full)</x-ui.button>
+                    </x-slot:trigger>
+                    <p>Selalu full-screen otomatis di breakpoint mobile, terlepas dari ukuran yang dipilih.</p>
+                </x-ui.modal>
+
+                <x-ui.modal variant="confirm" title="Hapus transaksi ini?">
+                    <x-slot:trigger>
+                        <x-ui.button variant="danger">Hapus (confirm)</x-ui.button>
+                    </x-slot:trigger>
+                    <p>Tindakan ini tidak bisa dibatalkan setelah dikonfirmasi.</p>
+                </x-ui.modal>
+
+                <x-ui.dropdown>
+                    <x-slot:trigger>
+                        <x-ui.button variant="ghost" icon-right="chevron-down">Opsi</x-ui.button>
+                    </x-slot:trigger>
+                    <x-ui.dropdown.item icon="check">Tandai lunas</x-ui.dropdown.item>
+                    <x-ui.dropdown.item icon="alert-circle">Laporkan masalah</x-ui.dropdown.item>
+                </x-ui.dropdown>
+            </div>
+        </section>
+
+        {{-- ===== TABS ===== --}}
+        <section class="mb-14" aria-labelledby="section-tabs">
+            <h2 id="section-tabs" class="text-h2 font-display text-ink mb-1">Tabs</h2>
+            <p class="text-sm text-ink-soft mb-6">Underline style, roving tabindex — navigasi dengan panah kiri/kanan saat fokus di tab list.</p>
+
+            <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <x-ui.tabs :tabs="['Ringkasan', 'Detail', 'Riwayat']">
+                    <div x-show="active === 0" role="tabpanel" class="pt-4 text-body text-ink-soft">Ringkasan singkat akun dan saldo terkini.</div>
+                    <div x-show="active === 1" role="tabpanel" class="pt-4 text-body text-ink-soft">Detail lengkap transaksi dan kategori.</div>
+                    <div x-show="active === 2" role="tabpanel" class="pt-4 text-body text-ink-soft">Riwayat perubahan pada catatan ini.</div>
+                </x-ui.tabs>
+            </div>
+        </section>
+
+        {{-- ===== TOAST ===== --}}
+        <section class="mb-14" aria-labelledby="section-toast">
+            <h2 id="section-toast" class="text-h2 font-display text-ink mb-1">Toast</h2>
+            <p class="text-sm text-ink-soft mb-6">Pojok kanan-bawah, auto-hide 4 detik, maksimal 3 antrian.</p>
+
+            <div
+                x-data="{
+                    toasts: [],
+                    seq: 0,
+                    push() {
+                        const id = this.seq++;
+                        if (this.toasts.length >= 3) this.toasts.shift();
+                        this.toasts.push({ id });
+                        setTimeout(() => { this.toasts = this.toasts.filter(t => t.id !== id) }, 4000);
+                    },
+                }"
+                class="rounded-lg border border-line bg-surface-card p-6 shadow-card"
+            >
+                <x-ui.button @click="push()">Tampilkan toast</x-ui.button>
+
+                <div class="c-toast-container">
+                    <template x-for="toast in toasts" :key="toast.id">
+                        <div class="c-toast" role="status" aria-live="polite" x-transition>
+                            <x-ui.icon name="circle-check" :size="20" class="text-positive shrink-0" />
+                            <div class="c-toast__body">
+                                <p class="c-toast__title">Berhasil disimpan</p>
+                                <div class="c-toast__message">Perubahan telah tersimpan otomatis.</div>
+                            </div>
+                            <button type="button" class="c-toast__dismiss" @click="toasts = toasts.filter(t => t.id !== toast.id)" aria-label="Tutup notifikasi">
+                                <x-ui.icon name="x" :size="16" />
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        {{-- ===== BREADCRUMB, AVATAR, TOOLTIP ===== --}}
+        <section class="mb-14" aria-labelledby="section-misc-nav">
+            <h2 id="section-misc-nav" class="text-h2 font-display text-ink mb-1">Breadcrumb, Avatar &amp; Tooltip</h2>
+
+            <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card mb-6">
+                <x-ui.breadcrumb :items="$breadcrumbItems" />
+            </div>
+
+            <div class="flex flex-wrap items-center gap-8 rounded-lg border border-line bg-surface-card p-6 shadow-card mb-6">
+                <x-ui.avatar size="xs" name="Siti Aminah" />
+                <x-ui.avatar size="sm" name="Budi Santoso" />
+                <x-ui.avatar size="md" name="Rina Wijaya" />
+                <x-ui.avatar size="lg" name="Agus Prasetyo" />
+            </div>
+
+            <div class="flex items-center gap-6 rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <x-ui.tooltip text="Total saldo aktif">
+                    <x-ui.button variant="secondary" size="sm" icon="wallet">Saldo</x-ui.button>
+                </x-ui.tooltip>
+                <p class="text-xs text-ink-muted">Hover atau fokus (Tab) tombol untuk melihat tooltip.</p>
+            </div>
+        </section>
+
+        {{-- ===== SKELETON, EMPTY STATE, PROGRESS, STEPPER ===== --}}
+        <section class="mb-14" aria-labelledby="section-feedback">
+            <h2 id="section-feedback" class="text-h2 font-display text-ink mb-1">Skeleton, Empty State, Progress &amp; Stepper</h2>
+
+            <div class="grid gap-6 lg:grid-cols-2 mb-6">
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Skeleton</p>
+                    <div class="flex items-center gap-3 mb-3">
+                        <x-ui.skeleton variant="circle" />
+                        <div class="flex-1 flex flex-col gap-2">
+                            <x-ui.skeleton variant="text" width="60%" />
+                            <x-ui.skeleton variant="text" width="40%" />
+                        </div>
+                    </div>
+                    <x-ui.skeleton variant="block" />
+                </div>
+
+                <x-ui.empty-state icon="search" title="Belum ada transaksi">
+                    Data transaksi akan muncul di sini setelah kamu menambahkan catatan pertama.
+                    <x-slot:cta>
+                        <x-ui.button size="sm">Tambah Transaksi</x-ui.button>
+                    </x-slot:cta>
+                </x-ui.empty-state>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-2 mb-6">
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Progress bar &amp; ring</p>
+                    <x-ui.progress variant="bar" :value="68" label="Anggaran terpakai" class="mb-6" />
+                    <x-ui.progress variant="ring" :value="68" label="68%" />
+                </div>
+
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Stepper</p>
+                    <x-ui.stepper :steps="$stepperSteps" :active="1" />
+                </div>
+            </div>
+        </section>
+
+        {{-- ===== CAROUSEL ===== --}}
+        <section class="mb-14" aria-labelledby="section-carousel">
+            <h2 id="section-carousel" class="text-h2 font-display text-ink mb-1">Carousel</h2>
+            <p class="text-sm text-ink-soft mb-6">Basis CSS scroll-snap — bisa digeser tanpa JavaScript. Alpine hanya menambah tombol prev/next &amp; dot indicator.</p>
+
+            <x-ui.carousel :slides="3">
+                <div class="rounded-lg border border-line bg-surface-card p-8 text-center shadow-card">
+                    <p class="text-body text-ink-soft">"Ledgerly membantu kami menutup buku bulanan jauh lebih cepat."</p>
+                    <p class="mt-3 text-sm font-medium text-ink">— Dian Kusuma, PT Maju Bersama</p>
+                </div>
+                <div class="rounded-lg border border-line bg-surface-card p-8 text-center shadow-card">
+                    <p class="text-body text-ink-soft">"Laporan keuangan jadi jauh lebih rapi dan mudah dibaca tim."</p>
+                    <p class="mt-3 text-sm font-medium text-ink">— Hendra Wijaya, CV Sinar Abadi</p>
+                </div>
+                <div class="rounded-lg border border-line bg-surface-card p-8 text-center shadow-card">
+                    <p class="text-body text-ink-soft">"Onboarding cepat, tim kami langsung bisa pakai dalam sehari."</p>
+                    <p class="mt-3 text-sm font-medium text-ink">— Maya Anggraini, Koperasi Sejahtera</p>
+                </div>
+            </x-ui.carousel>
+        </section>
     </div>
 </body>
 </html>
