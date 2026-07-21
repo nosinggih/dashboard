@@ -33,6 +33,7 @@ export default {
           soft: 'var(--color-text-secondary)',
           muted: 'var(--color-text-muted)',
         },
+        overlay: 'var(--color-overlay)',
         positive: { DEFAULT: 'var(--color-positive)', bg: 'var(--color-positive-bg)' },
         negative: { DEFAULT: 'var(--color-negative)', bg: 'var(--color-negative-bg)' },
         warning: { DEFAULT: 'var(--color-warning)', bg: 'var(--color-warning-bg)' },

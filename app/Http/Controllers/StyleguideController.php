@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+
 class StyleguideController extends Controller
 {
     public function index()
@@ -13,7 +16,47 @@ class StyleguideController extends Controller
             'shadowTokens' => $this->shadowTokens(),
             'motionTokens' => $this->motionTokens(),
             'icons' => $this->icons(),
+            'transactions' => $this->transactions(),
+            'paginator' => $this->paginator(),
+            'breadcrumbItems' => $this->breadcrumbItems(),
+            'stepperSteps' => $this->stepperSteps(),
         ]);
+    }
+
+    private function transactions(): Collection
+    {
+        return collect([
+            ['date' => '18 Jul 2026', 'description' => 'Pembayaran invoice PT Maju Bersama', 'category' => 'Pemasukan', 'status' => 'positive', 'statusLabel' => 'Lunas', 'amount' => 12_800_000],
+            ['date' => '15 Jul 2026', 'description' => 'Gaji karyawan bulan Juli', 'category' => 'Operasional', 'status' => 'negative', 'statusLabel' => 'Terbayar', 'amount' => -9_350_000],
+            ['date' => '12 Jul 2026', 'description' => 'Biaya server cloud', 'category' => 'Operasional', 'status' => 'warning', 'statusLabel' => 'Pending', 'amount' => -1_450_000],
+            ['date' => '09 Jul 2026', 'description' => 'Pembayaran invoice CV Sinar Abadi', 'category' => 'Pemasukan', 'status' => 'positive', 'statusLabel' => 'Lunas', 'amount' => 5_200_000],
+            ['date' => '05 Jul 2026', 'description' => 'Langganan software akuntansi', 'category' => 'Operasional', 'status' => 'negative', 'statusLabel' => 'Terbayar', 'amount' => -450_000],
+        ]);
+    }
+
+    private function paginator(): LengthAwarePaginator
+    {
+        return new LengthAwarePaginator(
+            items: [],
+            total: 96,
+            perPage: 10,
+            currentPage: 3,
+            options: ['path' => '/styleguide', 'pageName' => 'page'],
+        );
+    }
+
+    private function breadcrumbItems(): array
+    {
+        return [
+            ['label' => 'Dashboard', 'url' => '/styleguide'],
+            ['label' => 'Transaksi', 'url' => '/styleguide'],
+            ['label' => 'Detail Transaksi'],
+        ];
+    }
+
+    private function stepperSteps(): array
+    {
+        return ['Akun', 'Profil Usaha', 'Verifikasi'];
     }
 
     private function colorGroups(): array
