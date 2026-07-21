@@ -1,7 +1,231 @@
 /* resources/css/components.css
  * Class .c-* hasil ekstraksi @apply untuk utility Tailwind yang berulang.
- * Diisi mulai Fase 2. Dibungkus @layer components agar berada di antara
- * base dan utilities pada cascade akhir.
+ * Urutan deklarasi sengaja dijaga: varian/override yang lebih spesifik
+ * ditulis setelah kelas dasarnya agar cascade menang secara alami.
  */
 @layer components {
+  /* ===== BUTTON ===== */
+  .c-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors duration-fast ease-standard focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 disabled:pointer-events-none disabled:opacity-50;
+  }
+  .c-btn--sm {
+    @apply h-8 px-3 text-xs;
+  }
+  .c-btn--md {
+    @apply h-10 px-4 text-sm;
+  }
+  .c-btn--lg {
+    @apply h-12 px-6 text-body;
+  }
+  .c-btn--primary {
+    @apply bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .c-btn--secondary {
+    @apply border border-line bg-surface-card text-ink hover:bg-surface-sunken;
+  }
+  .c-btn--ghost {
+    @apply bg-transparent text-ink hover:bg-surface-sunken;
+  }
+  .c-btn--danger {
+    @apply bg-negative text-white hover:brightness-95;
+  }
+  .c-btn--link {
+    @apply h-auto rounded-none px-0 py-0 text-brand-600 underline-offset-4 hover:underline;
+  }
+  .c-btn__spinner {
+    @apply h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent;
+  }
+
+  /* ===== FIELD (shared: input, input-money, select, textarea) ===== */
+  .c-field {
+    @apply flex flex-col gap-1.5;
+  }
+  .c-field__label {
+    @apply text-xs font-medium text-ink;
+  }
+  .c-field__required {
+    @apply ml-0.5 text-negative;
+  }
+  .c-field__helper {
+    @apply text-xs text-ink-muted;
+  }
+  .c-field__error {
+    @apply flex items-center gap-1 text-xs text-negative;
+  }
+  .c-field__error-icon {
+    @apply shrink-0;
+  }
+
+  .c-input {
+    @apply w-full rounded-md border border-line bg-surface-card text-ink placeholder:text-ink-muted focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-300 disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-ink-muted;
+  }
+  .c-input--sm {
+    @apply h-8 px-3 text-xs;
+  }
+  .c-input--md {
+    @apply h-10 px-3 text-sm;
+  }
+  .c-input--lg {
+    @apply h-12 px-4 text-body;
+  }
+  .c-input--error {
+    @apply border-negative focus:border-negative focus:ring-negative;
+  }
+
+  /* ===== INPUT-MONEY (override padding milik .c-input--*) ===== */
+  .c-input-money {
+    @apply relative flex items-center;
+  }
+  .c-input-money__prefix {
+    @apply pointer-events-none absolute left-3 text-ink-muted;
+  }
+  .c-input-money__field {
+    @apply pl-10 text-right;
+  }
+
+  /* ===== TEXTAREA ===== */
+  .c-textarea {
+    @apply h-auto min-h-[6rem] py-2 leading-relaxed;
+  }
+
+  /* ===== CHECKBOX & RADIO ===== */
+  .c-check-field {
+    @apply flex flex-col gap-1.5;
+  }
+  .c-check-field__row {
+    @apply flex items-center gap-2;
+  }
+  .c-check-field__label {
+    @apply select-none text-body text-ink;
+  }
+  .c-checkbox {
+    @apply h-4 w-4 rounded border-line-strong text-brand-600 focus:ring-2 focus:ring-brand-300 focus:ring-offset-0;
+  }
+  .c-checkbox--error {
+    @apply border-negative;
+  }
+  .c-radio {
+    @apply h-4 w-4 border-line-strong text-brand-600 focus:ring-2 focus:ring-brand-300 focus:ring-offset-0;
+  }
+  .c-radio--error {
+    @apply border-negative;
+  }
+
+  /* ===== TOGGLE ===== */
+  .c-toggle {
+    @apply inline-flex cursor-pointer items-center gap-3;
+  }
+  .c-toggle__control {
+    @apply relative inline-flex h-6 w-11 shrink-0;
+  }
+  .c-toggle__input {
+    @apply absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0;
+  }
+  .c-toggle__track {
+    @apply absolute inset-0 rounded-full bg-line-strong transition-colors duration-base ease-standard peer-checked:bg-brand-600 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-300 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface-card;
+  }
+  .c-toggle__thumb {
+    @apply absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-surface-card shadow-card transition-transform duration-base ease-standard peer-checked:translate-x-5;
+  }
+  .c-toggle__label {
+    @apply text-body text-ink;
+  }
+
+  /* ===== CARD ===== */
+  .c-card {
+    @apply rounded-lg bg-surface-card p-6;
+  }
+  .c-card--default {
+    @apply shadow-card;
+  }
+  .c-card--flat {
+    @apply border border-line shadow-none;
+  }
+  .c-card--stat {
+    @apply shadow-card;
+  }
+  .c-card__header {
+    @apply mb-4 flex items-center justify-between border-b border-line pb-4;
+  }
+  .c-card__footer {
+    @apply mt-4 border-t border-line pt-4;
+  }
+  .c-card__stat-label {
+    @apply text-xs uppercase tracking-wide text-ink-muted;
+  }
+  .c-card__stat-value {
+    @apply mt-2 block text-display text-ink;
+  }
+  .c-card__stat-trend {
+    @apply mt-2;
+  }
+
+  /* ===== TREND ===== */
+  .c-trend {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium;
+  }
+  .c-trend--positive {
+    @apply bg-positive-bg text-positive;
+  }
+  .c-trend--negative {
+    @apply bg-negative-bg text-negative;
+  }
+
+  /* ===== BADGE ===== */
+  .c-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full font-medium;
+  }
+  .c-badge--sm {
+    @apply px-2 py-0.5 text-xs;
+  }
+  .c-badge--md {
+    @apply px-2.5 py-1 text-sm;
+  }
+  .c-badge--positive {
+    @apply bg-positive-bg text-positive;
+  }
+  .c-badge--negative {
+    @apply bg-negative-bg text-negative;
+  }
+  .c-badge--warning {
+    @apply bg-warning-bg text-warning;
+  }
+  .c-badge--info {
+    @apply bg-info-bg text-info;
+  }
+  .c-badge--neutral {
+    @apply bg-surface-sunken text-ink-soft;
+  }
+  .c-badge__dot {
+    @apply h-1.5 w-1.5 shrink-0 rounded-full bg-current;
+  }
+
+  /* ===== ALERT ===== */
+  .c-alert {
+    @apply flex items-start gap-3 rounded-md border p-4;
+  }
+  .c-alert--positive {
+    @apply border-positive bg-positive-bg;
+  }
+  .c-alert--negative {
+    @apply border-negative bg-negative-bg;
+  }
+  .c-alert--warning {
+    @apply border-warning bg-warning-bg;
+  }
+  .c-alert--info {
+    @apply border-info bg-info-bg;
+  }
+  .c-alert__body {
+    @apply flex-1;
+  }
+  .c-alert__title {
+    @apply text-sm font-semibold text-ink;
+  }
+  .c-alert__message {
+    @apply text-sm text-ink-soft;
+  }
+  .c-alert__dismiss {
+    @apply ml-auto shrink-0 rounded p-1 text-ink-muted transition-colors duration-fast hover:bg-surface-sunken hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300;
+  }
 }
