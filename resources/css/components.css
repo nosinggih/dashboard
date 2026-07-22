@@ -154,7 +154,7 @@
     @apply text-xs uppercase tracking-wide text-ink-muted;
   }
   .c-card__stat-value {
-    @apply mt-2 block text-display text-ink;
+    @apply mt-2 block text-body font-display text-ink sm:text-h2 md:text-h1 lg:text-display;
   }
   .c-card__stat-trend {
     @apply mt-2;
