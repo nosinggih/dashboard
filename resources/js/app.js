@@ -51,4 +51,17 @@ Alpine.directive('focus-trap', (el, { expression }, { evaluateLater, effect, cle
     });
 });
 
+Alpine.data('sidebarShell', () => ({
+    collapsed: localStorage.getItem('ui-sidebar-collapsed') === '1',
+    mobileOpen: false,
+    toggleCollapse() {
+        this.collapsed = ! this.collapsed;
+        localStorage.setItem('ui-sidebar-collapsed', this.collapsed ? '1' : '0');
+    },
+}));
+
+Alpine.data('topbarNav', () => ({
+    mobileOpen: false,
+}));
+
 Alpine.start();

@@ -23,6 +23,37 @@ class StyleguideController extends Controller
         ]);
     }
 
+    public function layoutGuest()
+    {
+        return view('pages.styleguide.layout-guest');
+    }
+
+    public function layoutSidebar()
+    {
+        return view('pages.styleguide.layout-sidebar', [
+            'transactions' => $this->transactions(),
+        ]);
+    }
+
+    public function layoutTopbar()
+    {
+        return view('pages.styleguide.layout-topbar', [
+            'transactions' => $this->transactions(),
+        ]);
+    }
+
+    public function layoutMix()
+    {
+        $modules = config('nav.modules');
+        $activeModule = collect($modules)->firstWhere('key', request('modul', 'keuangan')) ?? $modules[0];
+
+        return view('pages.styleguide.layout-mix', [
+            'transactions' => $this->transactions(),
+            'modules' => $modules,
+            'activeModule' => $activeModule,
+        ]);
+    }
+
     private function transactions(): Collection
     {
         return collect([

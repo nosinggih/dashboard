@@ -553,6 +553,38 @@
                 </div>
             </x-ui.carousel>
         </section>
+
+        {{-- ===== LAYOUT ===== --}}
+        <section class="mb-14" aria-labelledby="section-layout">
+            <h2 id="section-layout" class="text-h2 font-display text-ink mb-1">Layout</h2>
+            <p class="text-sm text-ink-soft mb-6">
+                Tiga varian shell dashboard (sidebar, topbar, mix) dan satu layout guest. Setiap kartu membuka
+                preview penuh agar interaksi collapse sidebar dan drawer mobile bisa dicoba langsung.
+            </p>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-2">layouts/guest</p>
+                    <p class="text-sm text-ink-soft mb-4">Landing, login, register — navbar + footer.</p>
+                    <a href="{{ route('styleguide.layouts.guest') }}" class="c-btn c-btn--secondary c-btn--sm">Buka Preview</a>
+                </div>
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-2">layouts/app-sidebar</p>
+                    <p class="text-sm text-ink-soft mb-4">Default — sidebar 260px, collapse ke 72px, drawer mobile.</p>
+                    <a href="{{ route('styleguide.layouts.sidebar') }}" class="c-btn c-btn--secondary c-btn--sm">Buka Preview</a>
+                </div>
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-2">layouts/app-topbar</p>
+                    <p class="text-sm text-ink-soft mb-4">Navigasi horizontal, menu overflow ke dropdown "Lainnya".</p>
+                    <a href="{{ route('styleguide.layouts.topbar') }}" class="c-btn c-btn--secondary c-btn--sm">Buka Preview</a>
+                </div>
+                <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                    <p class="text-xs uppercase tracking-wide text-ink-muted mb-2">layouts/app-mix</p>
+                    <p class="text-sm text-ink-soft mb-4">Topbar level-1 (modul) + sidebar level-2 + breadcrumb.</p>
+                    <a href="{{ route('styleguide.layouts.mix') }}" class="c-btn c-btn--secondary c-btn--sm">Buka Preview</a>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>
