@@ -1,4 +1,6 @@
 {
+    "name": "dashboard",
+    "description": "Dashboard template repository — design system + UI components for modern web applications",
     "private": true,
     "type": "module",
     "scripts": {
