@@ -636,7 +636,10 @@
 
   /* ===== NAVBAR (layout guest) ===== */
   .c-navbar {
-    @apply sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-line px-4 sm:px-6 lg:px-10;
+    @apply sticky top-0 z-30 border-b border-line;
+  }
+  .c-navbar__inner {
+    @apply flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-10;
   }
   .c-navbar__brand {
     @apply flex items-center gap-2 text-h2 font-display text-ink;
@@ -734,7 +737,7 @@
     @apply grid items-center gap-10 lg:grid-cols-2;
   }
   .c-hero__mock {
-    @apply rounded-lg border border-line bg-surface p-4 shadow-card;
+    @apply min-w-0 rounded-lg border border-line bg-surface p-4 shadow-card;
   }
 
   /* ===== TRUST BAR (landing page) ===== */
