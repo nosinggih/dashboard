@@ -21,6 +21,7 @@
   --color-text-primary:  #1C2430; /* bukan hitam pekat — lebih nyaman */
   --color-text-secondary:#5A6472;
   --color-text-muted:    #8B94A3;
+  --color-surface-glass: rgba(255, 255, 255, .85); /* navbar/topbar sticky, dipakai bersama backdrop-filter + fallback solid */
 
   /* ===== SEMANTIC (versi muted, bukan neon) ===== */
   --color-positive: #2F8A56;  --color-positive-bg: #E9F5EE;
@@ -53,4 +54,5 @@
   --color-border:       #2A3240;
   --color-text-primary: #E8ECF1;
   --color-text-secondary:#A6B0BE;
+  --color-surface-glass: rgba(27, 33, 43, .85);
 }
