@@ -19,8 +19,8 @@ $navLinks = [
     </nav>
 
     <div class="c-navbar__actions">
-        <a href="#" class="c-btn c-btn--ghost c-btn--sm hidden sm:inline-flex">Masuk</a>
-        <a href="#" class="c-btn c-btn--primary c-btn--sm hidden sm:inline-flex">Daftar</a>
+        <a href="{{ route('login') }}" class="c-btn c-btn--ghost c-btn--sm hidden sm:inline-flex">Masuk</a>
+        <a href="{{ route('register') }}" class="c-btn c-btn--primary c-btn--sm hidden sm:inline-flex">Daftar</a>
 
         <button
             type="button"
@@ -40,8 +40,8 @@ $navLinks = [
             <a href="{{ $link['url'] }}" class="c-topbar-drawer__link">{{ $link['label'] }}</a>
         @endforeach
         <div class="mt-2 flex gap-2 px-3">
-            <a href="#" class="c-btn c-btn--secondary c-btn--sm flex-1 justify-center">Masuk</a>
-            <a href="#" class="c-btn c-btn--primary c-btn--sm flex-1 justify-center">Daftar</a>
+            <a href="{{ route('login') }}" class="c-btn c-btn--secondary c-btn--sm flex-1 justify-center">Masuk</a>
+            <a href="{{ route('register') }}" class="c-btn c-btn--primary c-btn--sm flex-1 justify-center">Daftar</a>
         </div>
     </nav>
 </header>

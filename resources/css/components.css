@@ -717,4 +717,76 @@
   .c-topbar-drawer__link.is-active {
     @apply bg-brand-50 text-brand-700;
   }
+
+  /* ===== SECTION (landing page) ===== */
+  .c-section {
+    @apply py-16 sm:py-20;
+  }
+  .c-section__container {
+    @apply mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-10;
+  }
+
+  /* ===== HERO (landing page) ===== */
+  .c-hero {
+    @apply border-b border-line bg-surface-card py-16 sm:py-24;
+  }
+  .c-hero__grid {
+    @apply grid items-center gap-10 lg:grid-cols-2;
+  }
+  .c-hero__mock {
+    @apply rounded-lg border border-line bg-surface p-4 shadow-card;
+  }
+
+  /* ===== TRUST BAR (landing page) ===== */
+  .c-trust-bar {
+    @apply mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3;
+  }
+  .c-trust-bar__item {
+    @apply text-sm font-medium text-ink-muted grayscale;
+  }
+
+  /* ===== TESTIMONIAL (landing page) ===== */
+  .c-testimonial {
+    @apply rounded-lg border border-line bg-surface-card p-8 text-center shadow-card;
+  }
+
+  /* ===== PRICING (landing page) ===== */
+  .c-pricing-card--highlight {
+    @apply border-2 border-brand-600 shadow-modal;
+  }
+
+  /* ===== CTA BANNER (landing page) ===== */
+  .c-cta-banner {
+    @apply bg-brand-900 py-16;
+  }
+
+  /* ===== AUTH SPLIT (login & register) ===== */
+  .c-auth {
+    @apply flex min-h-screen flex-col lg:flex-row;
+  }
+  .c-auth__aside {
+    @apply hidden flex-col justify-center gap-8 bg-brand-900 p-12 text-white lg:flex lg:w-1/2;
+  }
+  .c-auth__quote {
+    @apply max-w-md;
+  }
+  .c-auth__form {
+    @apply flex w-full flex-1 items-center justify-center px-6 py-12 sm:px-10 lg:w-1/2;
+  }
+  .c-auth__form-inner {
+    @apply w-full max-w-[400px];
+  }
+  .c-auth__divider {
+    @apply relative my-1 flex items-center gap-3 text-xs text-ink-muted;
+  }
+  .c-auth__divider::before,
+  .c-auth__divider::after {
+    content: '';
+    @apply h-px flex-1 bg-line;
+  }
+
+  /* ===== CHART CARD (dashboard) ===== */
+  .c-chart-card {
+    @apply relative h-72 w-full;
+  }
 }
