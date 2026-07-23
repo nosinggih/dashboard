@@ -35,6 +35,7 @@
 
 ### Performa & Kompatibilitas
 11. **Self-host semua aset.** Font (woff2), ikon (SVG inline), Alpine.js, Chart.js — jangan pakai CDN eksternal.
+    - **Pengecualian:** Date picker boleh memuat library vanilla-JS ringan (non-jQuery, mis. flatpickr) via CDN, **khusus untuk fitur date picker saja**. Semua aset/library lain tetap wajib self-host.
 12. **Halaman harus fungsional tanpa JavaScript.** Form bisa submit, tabel terbaca, navigasi bisa diklik. JS hanya enhancement.
 13. **Hormati `prefers-reduced-motion`.** Semua animasi/transisi harus dibungkus media query reduced-motion.
 
@@ -420,6 +421,7 @@ php artisan serve    # jalankan Laravel
 
 1. ❌ Jangan install Tailwind v4
 2. ❌ Jangan pakai CDN untuk font/ikon/library apapun
+   - **Pengecualian:** Date picker library (vanilla-JS, non-jQuery) boleh via CDN, khusus untuk fitur date picker saja
 3. ❌ Jangan pakai `@include` untuk komponen UI — selalu Blade Component
 4. ❌ Jangan tulis `<?php ?>` atau `{!! !!}` di view untuk logika — hanya `{{ }}` untuk output
 5. ❌ Jangan hardcode hex warna — selalu token

@@ -223,6 +223,10 @@
                     <option value="lunas">Lunas</option>
                 </x-ui.select>
 
+                <x-ui.input-date label="Tanggal transaksi" helper="Format: dd/mm/yyyy" />
+                <x-ui.input-date label="Tanggal jatuh tempo" size="sm" required />
+                <x-ui.input-date label="Tanggal (error)" size="lg" error="Tanggal tidak valid." icon />
+
                 <x-ui.textarea label="Catatan" placeholder="Tambahkan catatan transaksi…" class="sm:col-span-2 lg:col-span-3" />
             </div>
 

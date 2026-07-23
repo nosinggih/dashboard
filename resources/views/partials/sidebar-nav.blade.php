@@ -22,7 +22,7 @@
                 >
                     <x-ui.icon :name="$item['icon']" :size="20" class="shrink-0" />
                     <span class="c-sidebar-nav__label">{{ $item['label'] }}</span>
-                    <x-ui.icon name="chevron-down" :size="16" class="c-sidebar-nav__chevron shrink-0 ml-auto" :class="{ 'rotate-180': open }" />
+                    <x-ui.icon name="chevron-down" :size="16" class="c-sidebar-nav__chevron shrink-0 ml-auto" class="{ 'rotate-180': open }" />
                 </button>
 
                 {{-- Flyout (saat sidebar collapsed) --}}
