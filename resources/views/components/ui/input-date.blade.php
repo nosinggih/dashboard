@@ -59,32 +59,30 @@ $errorClass = $hasError ? 'c-input--error' : '';
 
 @once
     @push('scripts')
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.css">
+        <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.5.3/air-datepicker.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const idLocale = {
-                    weekdays: {
-                        shorthand: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                        longhand: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-                    },
-                    months: {
-                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-                        longhand: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                    },
-                    firstDayOfWeek: 1,
-                    rangeSeparator: ' — ',
-                    weekAbbreviation: 'Mgg',
-                    ordinal: function () { return ''; },
+                    days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                    daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+                    months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+                    monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                    today: 'Hari ini',
+                    clear: 'Hapus',
+                    dateFormat: 'dd/MM/yyyy',
+                    timeFormat: 'hh:mm',
+                    firstDay: 1,
                 };
 
                 const inputs = document.querySelectorAll('[data-js="date-input"]');
                 inputs.forEach(function (input) {
-                    flatpickr(input, {
-                        mode: 'single',
-                        dateFormat: 'd/m/Y',
-                        allowInput: false,
+                    new AirDatepicker(input, {
                         locale: idLocale,
+                        dateFormat: 'dd/MM/yyyy',
+                        autoClose: true,
+                        isMobile: false,
                     });
                 });
             });
