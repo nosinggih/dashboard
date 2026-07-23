@@ -198,6 +198,36 @@
             <h2 id="section-form" class="text-h2 font-display text-ink mb-1">Form Controls</h2>
             <p class="text-sm text-ink-soft mb-6">Label di atas, input di tengah, helper/error di bawah. Error selalu didampingi ikon, bukan warna saja.</p>
 
+            @php
+                $coaOptions = [
+                    '1-1001' => '1-1001 · Kas Kecil',
+                    '1-1002' => '1-1002 · Kas Besar',
+                    '1-1101' => '1-1101 · Bank BCA',
+                    '1-1102' => '1-1102 · Bank BRI',
+                    '1-1103' => '1-1103 · Bank Mandiri',
+                    '1-1201' => '1-1201 · Piutang Usaha',
+                    '1-1202' => '1-1202 · Piutang Karyawan',
+                    '1-1301' => '1-1301 · Persediaan Barang Dagang',
+                    '1-2001' => '1-2001 · Peralatan Kantor',
+                    '1-2002' => '1-2002 · Kendaraan Operasional',
+                    '2-1001' => '2-1001 · Utang Usaha',
+                    '2-1002' => '2-1002 · Utang Pajak',
+                    '2-1003' => '2-1003 · Utang Gaji',
+                    '2-2001' => '2-2001 · Utang Bank Jangka Panjang',
+                    '3-1001' => '3-1001 · Modal Disetor',
+                    '3-2001' => '3-2001 · Laba Ditahan',
+                    '4-1001' => '4-1001 · Pendapatan Penjualan',
+                    '4-1002' => '4-1002 · Pendapatan Jasa',
+                    '4-2001' => '4-2001 · Pendapatan Lain-lain',
+                    '5-1001' => '5-1001 · Beban Gaji Karyawan',
+                    '5-1002' => '5-1002 · Beban Sewa Kantor',
+                    '5-1003' => '5-1003 · Beban Listrik & Air',
+                    '5-1004' => '5-1004 · Beban Internet & Telepon',
+                    '5-1005' => '5-1005 · Beban Server Cloud',
+                    '5-2001' => '5-2001 · Beban Penyusutan',
+                ];
+            @endphp
+
             <div class="grid gap-6 rounded-lg border border-line bg-surface-card p-6 shadow-card sm:grid-cols-2 lg:grid-cols-3">
                 <x-ui.input label="Nama lengkap" placeholder="Nama sesuai KTP" helper="Sesuai dokumen identitas." />
                 <x-ui.input label="Email" type="email" size="sm" placeholder="nama@perusahaan.com" required />
@@ -226,6 +256,29 @@
                 <x-ui.input-date label="Tanggal transaksi" helper="Format: dd/mm/yyyy" />
                 <x-ui.input-date label="Tanggal jatuh tempo" size="sm" required />
                 <x-ui.input-date label="Tanggal (error)" size="lg" error="Tanggal tidak valid." icon />
+
+                <x-ui.select-search
+                    label="Akun (Chart of Accounts)"
+                    name="account"
+                    :options="$coaOptions"
+                    placeholder="Cari akun…"
+                    helper="Ketik nomor atau nama akun untuk mencari."
+                />
+                <x-ui.select-search
+                    label="Akun, sudah terisi"
+                    size="sm"
+                    name="account_prefill"
+                    :options="$coaOptions"
+                    value="5-1005"
+                    required
+                />
+                <x-ui.select-search
+                    label="Akun (error)"
+                    size="lg"
+                    name="account_error"
+                    :options="$coaOptions"
+                    error="Akun wajib dipilih."
+                />
 
                 <x-ui.textarea label="Catatan" placeholder="Tambahkan catatan transaksi…" class="sm:col-span-2 lg:col-span-3" />
             </div>

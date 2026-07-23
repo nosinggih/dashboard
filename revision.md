@@ -203,11 +203,10 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 - Kontrak prop selaras `input.blade.php`: `label`, `helper`, `error`, `size` (sm/md/lg).
 
 ### Dependensi baru & perubahan aturan
-- **Library:** air-datepicker.js (vanilla JS, tanpa jQuery), dimuat via **CDN**.
-- **Perubahan `CLAUDE.md`** (bagian "Aturan Absolut → Performa & Kompatibilitas", item #11, dan "Larangan Keras" #2): tambah butir pengecualian baru, redaksi draft:
-  > *"Pengecualian self-host: date picker boleh memuat library vanilla-JS ringan (non-jQuery) via CDN, khusus untuk fitur date picker. Semua aset/library lain (font, ikon, Alpine.js, Chart.js, dst) tetap wajib self-host — pengecualian ini tidak berlaku untuk komponen lain."*
+- **Library:** air-datepicker.js (vanilla JS, tanpa jQuery), **di-install via npm dan di-bundle lewat Vite** (bukan CDN — lihat catatan migrasi kedua di bawah).
 - Ini adalah keputusan eksplisit dari user (bukan pelanggaran diam-diam) — dicatat di sini agar berjejak saat implementasi & review berikutnya.
-- **Catatan migrasi:** implementasi awal memakai flatpickr, tapi di-reset dan diganti ke air-datepicker.js karena air-datepicker mendukung theming native lewat CSS custom property (`--adp-*`), lebih mudah diselaraskan ke design token tanpa perlu `!important` di hampir semua property untuk memenangkan cascade.
+- **Catatan migrasi (1):** implementasi awal memakai flatpickr, tapi di-reset dan diganti ke air-datepicker.js karena air-datepicker mendukung theming native lewat CSS custom property (`--adp-*`), lebih mudah diselaraskan ke design token tanpa perlu `!important` di hampir semua property untuk memenangkan cascade.
+- **Catatan migrasi (2, 2026-07-23):** setelah analisis library-vs-vanilla menyeluruh, CDN exception untuk date picker dicabut. `air-datepicker` (dan `focus-trap` untuk modal) di-install via `npm install` dan di-bundle lewat Vite sebagai chunk lazy-load terpisah (`resources/js/modules/date-picker.js`), konsisten dengan Chart.js. `CLAUDE.md` rule #11 & Larangan Keras #2 diperbarui: tidak ada lagi pengecualian CDN sama sekali.
 
 ### Komponen/file yang terlibat
 - `resources/views/components/ui/input-date.blade.php` — baru, inisialisasi air-datepicker inline di `@push('scripts')`
@@ -218,7 +217,7 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 - [x] Kalender berfungsi dengan locale Indonesia, format tampilan `dd/mm/yyyy`
 - [x] Varian dengan & tanpa icon terdemo di `/styleguide`
 - [x] Fallback tanpa-JS: field tetap berupa `<input type="date">` biasa (browser native date picker) jika JS gagal load
-- [x] `CLAUDE.md` sudah diperbarui dengan butir pengecualian CDN yang jelas dan sempit ruang lingkupnya
+- [x] `CLAUDE.md` sudah diperbarui — awalnya pengecualian CDN sempit, kini (2026-07-23) dicabut total karena library di-install via npm/Vite
 - [x] Popover ter-styling penuh via token (tidak ada warna/shadow bawaan library yang bocor)
 
 ### Status: ✅ SELESAI (Commit: f000c6c → direset & diganti library di f648705)
@@ -226,7 +225,7 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 **Implementasi final (air-datepicker.js):**
 - Komponen: `resources/views/components/ui/input-date.blade.php`
 - Props: label, size (sm/md/lg), error, helper, required, icon (boolean)
-- Menggunakan air-datepicker@3.5.3 (CDN: jsdelivr)
+- Menggunakan air-datepicker@3.6.0 (npm, di-bundle via Vite sebagai `resources/js/modules/date-picker.js`, lazy-loaded per-halaman lewat `@vite()` di dalam `@push('scripts')`)
 - Locale: Indonesia — days, daysShort, daysMin, months, monthsShort, today, clear, firstDay (Senin)
 - Format display: `dd/MM/yyyy` (token syntax air-datepicker)
 - Styling: override via CSS custom property native `--adp-*` di `components.css`, dipetakan ke token design system
@@ -234,9 +233,7 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
   - Cell hover → brand-50, selected → brand-600/700, in-range → brand-100
   - Nav & day-name → text-muted/text-primary token
 - Fallback tanpa-JS: `readonly` + native browser date picker (input[type=date])
-- CLAUDE.md diupdate: CDN exception untuk date picker library di rule #11 & Larangan Keras #2
-  - Batasan: hanya untuk library vanilla-JS ringan (non-jQuery), khusus date picker feature
-  - Semua aset lain tetap wajib self-host
+- CLAUDE.md diupdate (2026-07-23): pengecualian CDN untuk date picker di rule #11 & Larangan Keras #2 dicabut sepenuhnya — semua library JS (termasuk air-datepicker & focus-trap) kini wajib npm install + bundle Vite, tidak ada pengecualian CDN lagi
 - Demo di styleguide: 3 contoh (default md, sm, lg + error + icon)
 - CSS budget akhir: 12.55 KB gzip ✅ (masih jauh under 30 KB)
 
@@ -263,10 +260,23 @@ Dropdown pilihan panjang (mis. daftar akun, kategori) sulit dicari dengan `<sele
 Tidak ada.
 
 ### Definition of Done
-- [ ] Search box memfilter opsi secara real-time, case-insensitive
-- [ ] Keyboard-only bisa memilih opsi tanpa mouse
-- [ ] Tanpa JS: fallback jadi `<select>` native yang tetap bisa submit
-- [ ] Didemokan di `/styleguide` dengan daftar opsi panjang (20+ item) sebagai contoh realistis
+- [x] Search box memfilter opsi secara real-time, case-insensitive
+- [x] Keyboard-only bisa memilih opsi tanpa mouse
+- [x] Tanpa JS: fallback jadi `<select>` native yang tetap bisa submit
+- [x] Didemokan di `/styleguide` dengan daftar opsi panjang (20+ item) sebagai contoh realistis
+
+### Status: ✅ SELESAI (2026-07-23)
+
+**Implementasi:**
+- `resources/views/components/ui/select-search.blade.php` — komponen baru, kontrak prop selaras `select.blade.php` (`label`, `helper`, `error`, `size`, `required`) + `options` (array value=>label), `placeholder`
+- Progressive enhancement: `<select>` native selalu dirender di DOM (menerima `name`/`required`/atribut form asli). Alpine (`x-data="selectSearch(...)"`, terdaftar di `app.js`) membungkusnya lewat `<template x-if="enhanced">` — UI kustom (trigger button + panel search) hanya muncul setelah Alpine boot. Tanpa JS, `<select>` biasa tetap terlihat & submit normal.
+- Saat enhanced: `<select>` native disembunyikan (`sr-only` + `aria-hidden`, `tabindex="-1"`) tapi tetap jadi sumber kebenaran nilai form — `choose()` menulis ke `$refs.native.value` lalu dispatch event `change` supaya kompatibel dengan listener form lain.
+- Keyboard: `ArrowDown`/`ArrowUp` membuka & navigasi list, `Enter` pilih, `Escape`/klik-luar tutup — pola roving mirip `tabs.blade.php`.
+- CSS baru: `.c-select-search__*` di `components.css`, semua lewat token (tidak ada hex hardcode)
+- Demo di `/styleguide`: 3 contoh (kosong+helper, sm+prefill, lg+error) memakai daftar Chart of Accounts realistis (25 akun)
+- Dependensi: nihil (Alpine murni, sesuai rencana)
+
+**Catatan JS budget (2026-07-23):** Bersamaan dengan swap `focus-trap` npm library (lihat Item 3), `app.js` naik ke 41.16 KB gzip, sedikit melebihi budget lama 40 KB. Atas keputusan eksplisit user, budget resmi di `design-system-finance.md` bab 14 & `CLAUDE.md` dinaikkan ke **45 KB** — bukan pelanggaran diam-diam, dicatat di sini agar berjejak.
 
 ---
 

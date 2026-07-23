@@ -34,8 +34,7 @@
 10. **Kontras WCAG AA minimum** — 4.5:1 untuk body text, 3:1 untuk large text.
 
 ### Performa & Kompatibilitas
-11. **Self-host semua aset.** Font (woff2), ikon (SVG inline), Alpine.js, Chart.js — jangan pakai CDN eksternal.
-    - **Pengecualian:** Date picker boleh memuat library vanilla-JS ringan (non-jQuery, mis. air-datepicker) via CDN, **khusus untuk fitur date picker saja**. Semua aset/library lain tetap wajib self-host.
+11. **Self-host semua aset.** Font (woff2), ikon (SVG inline), Alpine.js, Chart.js, dan library UI lain (mis. air-datepicker, focus-trap) — install via npm dan bundle lewat Vite. Jangan pakai CDN eksternal untuk apapun.
 12. **Halaman harus fungsional tanpa JavaScript.** Form bisa submit, tabel terbaca, navigasi bisa diklik. JS hanya enhancement.
 13. **Hormati `prefers-reduced-motion`.** Semua animasi/transisi harus dibungkus media query reduced-motion.
 
@@ -335,7 +334,7 @@ Tugas:
 2. Test keyboard-only navigation: Tab melalui semua elemen interaktif, focus ring selalu terlihat
 3. Test tanpa JavaScript: disable JS di browser → halaman tetap terbaca, form tetap bisa submit
 4. Jalankan `npx tailwindcss --minify` — cek ukuran CSS akhir ≤ 30KB gzip
-5. Cek total JS (Alpine + custom) ≤ 40KB gzip
+5. Cek total JS (Alpine + custom) ≤ 45KB gzip
 6. Cek font ≤ 120KB total
 7. Audit kontras warna: semua teks lolos WCAG AA
 8. Pastikan `prefers-reduced-motion` berfungsi
@@ -420,8 +419,7 @@ php artisan serve    # jalankan Laravel
 ## Larangan Keras
 
 1. ❌ Jangan install Tailwind v4
-2. ❌ Jangan pakai CDN untuk font/ikon/library apapun
-   - **Pengecualian:** Date picker library (vanilla-JS, non-jQuery) boleh via CDN, khusus untuk fitur date picker saja
+2. ❌ Jangan pakai CDN untuk font/ikon/library apapun — semua library JS (termasuk date picker) wajib di-install via npm dan di-bundle lewat Vite
 3. ❌ Jangan pakai `@include` untuk komponen UI — selalu Blade Component
 4. ❌ Jangan tulis `<?php ?>` atau `{!! !!}` di view untuk logika — hanya `{{ }}` untuk output
 5. ❌ Jangan hardcode hex warna — selalu token

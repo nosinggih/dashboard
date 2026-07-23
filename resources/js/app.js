@@ -1,53 +1,36 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
+import { createFocusTrap } from 'focus-trap';
 
 window.Alpine = Alpine;
-
-const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 Alpine.directive('focus-trap', (el, { expression }, { evaluateLater, effect, cleanup }) => {
     const evaluate = evaluateLater(expression);
     let active = false;
-    let previouslyFocused = null;
 
-    const handleKeydown = (event) => {
-        if (event.key !== 'Tab') return;
-
-        const focusable = Array.from(el.querySelectorAll(FOCUSABLE_SELECTOR));
-        if (focusable.length === 0) return;
-
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-
-        if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last.focus();
-        } else if (! event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first.focus();
-        }
-    };
+    const trap = createFocusTrap(el, {
+        escapeDeactivates: false,
+        clickOutsideDeactivates: false,
+        fallbackFocus: el,
+    });
 
     effect(() => {
         evaluate((value) => {
             if (value && ! active) {
                 active = true;
-                previouslyFocused = document.activeElement;
                 document.body.style.overflow = 'hidden';
-                queueMicrotask(() => (el.querySelector(FOCUSABLE_SELECTOR) || el).focus());
-                document.addEventListener('keydown', handleKeydown);
+                trap.activate();
             } else if (! value && active) {
                 active = false;
                 document.body.style.overflow = '';
-                document.removeEventListener('keydown', handleKeydown);
-                previouslyFocused?.focus();
+                trap.deactivate();
             }
         });
     });
 
     cleanup(() => {
-        document.removeEventListener('keydown', handleKeydown);
         document.body.style.overflow = '';
+        if (active) trap.deactivate();
     });
 });
 
@@ -62,6 +45,73 @@ Alpine.data('sidebarShell', () => ({
 
 Alpine.data('topbarNav', () => ({
     mobileOpen: false,
+}));
+
+Alpine.data('selectSearch', ({ options = [], selected = '' } = {}) => ({
+    enhanced: false,
+    open: false,
+    query: '',
+    options,
+    selected,
+    activeIndex: -1,
+
+    init() {
+        this.enhanced = true;
+        this.$watch('query', () => (this.activeIndex = this.filtered.length ? 0 : -1));
+    },
+
+    get filtered() {
+        const q = this.query.trim().toLowerCase();
+        return q ? this.options.filter((opt) => opt.label.toLowerCase().includes(q)) : this.options;
+    },
+
+    get selectedLabel() {
+        return this.options.find((opt) => opt.value === this.selected)?.label ?? '';
+    },
+
+    toggle() {
+        this.open ? this.close() : this.openAndFocus();
+    },
+
+    openAndFocus() {
+        this.open = true;
+        this.activeIndex = Math.max(0, this.filtered.findIndex((opt) => opt.value === this.selected));
+        this.$nextTick(() => this.$refs.search?.focus());
+    },
+
+    close() {
+        this.open = false;
+        this.query = '';
+        this.activeIndex = -1;
+    },
+
+    highlightNext() {
+        if (! this.open) return this.openAndFocus();
+        this.activeIndex = Math.min(this.activeIndex + 1, this.filtered.length - 1);
+        this.scrollActiveIntoView();
+    },
+
+    highlightPrev() {
+        if (! this.open) return;
+        this.activeIndex = Math.max(this.activeIndex - 1, 0);
+        this.scrollActiveIntoView();
+    },
+
+    scrollActiveIntoView() {
+        this.$nextTick(() => this.$refs.list?.children[this.activeIndex]?.scrollIntoView({ block: 'nearest' }));
+    },
+
+    selectHighlighted() {
+        const opt = this.filtered[this.activeIndex];
+        if (opt) this.choose(opt);
+    },
+
+    choose(opt) {
+        this.selected = opt.value;
+        this.$refs.native.value = opt.value;
+        this.$refs.native.dispatchEvent(new Event('change', { bubbles: true }));
+        this.close();
+    },
 }));
 
 Alpine.start();

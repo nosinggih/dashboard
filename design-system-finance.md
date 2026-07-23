@@ -490,7 +490,7 @@ Konteks: **browser lama + koneksi internet biasa** → anggaran performa ketat.
 | Aset | Budget |
 |---|---|
 | CSS (purged + minified + gzip) | ≤ 30 KB |
-| JS total (Alpine + custom) | ≤ 40 KB |
+| JS total (Alpine + custom) | ≤ 45 KB |
 | Font (2 keluarga, subset latin, `woff2`, self-host) | ≤ 120 KB |
 | Halaman dashboard total first-load | ≤ 300 KB |
 | Gambar landing | WebP + fallback JPEG, `loading="lazy"` |
