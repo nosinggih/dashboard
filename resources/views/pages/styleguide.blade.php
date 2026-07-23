@@ -38,6 +38,33 @@
                     </div>
                 </div>
             @endforeach
+
+            <div class="mb-8">
+                <h3 class="text-xs font-medium uppercase tracking-wide text-ink-muted mb-3">Gradient — Semantic (Opsional)</h3>
+                <p class="text-xs text-ink-soft mb-4">Varian gradient untuk aksen visual yang lebih kuat. Tetap patuhi aturan warna: hijau=masuk/naik, merah=keluar/turun.</p>
+                <div class="flex flex-wrap gap-4">
+                    <div class="w-32">
+                        <div class="bg-positive-gradient h-16 rounded-md border border-line shadow-card"></div>
+                        <p class="text-xs text-ink mt-2">positive-gradient</p>
+                    </div>
+                    <div class="w-32">
+                        <div class="bg-negative-gradient h-16 rounded-md border border-line shadow-card"></div>
+                        <p class="text-xs text-ink mt-2">negative-gradient</p>
+                    </div>
+                    <div class="w-32">
+                        <div class="bg-warning-gradient h-16 rounded-md border border-line shadow-card"></div>
+                        <p class="text-xs text-ink mt-2">warning-gradient</p>
+                    </div>
+                    <div class="w-32">
+                        <div class="bg-info-gradient h-16 rounded-md border border-line shadow-card"></div>
+                        <p class="text-xs text-ink mt-2">info-gradient</p>
+                    </div>
+                    <div class="w-32">
+                        <div class="bg-brand-gradient h-16 rounded-md border border-line shadow-card"></div>
+                        <p class="text-xs text-ink mt-2">brand-gradient</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         {{-- ===== TIPOGRAFI ===== --}}
