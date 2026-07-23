@@ -215,11 +215,31 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 - `CLAUDE.md` — update aturan (lihat di atas)
 
 ### Definition of Done
-- [ ] Kalender berfungsi dengan locale Indonesia, format tampilan `dd/mm/yyyy`
-- [ ] Varian dengan & tanpa icon terdemo di `/styleguide`
-- [ ] Fallback tanpa-JS: field tetap berupa `<input type="date">` biasa (browser native date picker) jika JS gagal load
-- [ ] `CLAUDE.md` sudah diperbarui dengan butir pengecualian CDN yang jelas dan sempit ruang lingkupnya
-- [ ] Popover ter-styling penuh via token (tidak ada warna/shadow bawaan library yang bocor)
+- [x] Kalender berfungsi dengan locale Indonesia, format tampilan `dd/mm/yyyy`
+- [x] Varian dengan & tanpa icon terdemo di `/styleguide`
+- [x] Fallback tanpa-JS: field tetap berupa `<input type="date">` biasa (browser native date picker) jika JS gagal load
+- [x] `CLAUDE.md` sudah diperbarui dengan butir pengecualian CDN yang jelas dan sempit ruang lingkupnya
+- [x] Popover ter-styling penuh via token (tidak ada warna/shadow bawaan library yang bocor)
+
+### Status: ✅ SELESAI (Commit: f000c6c)
+
+**Implementasi detail:**
+- Komponen baru: `resources/views/components/ui/input-date.blade.php`
+- Props: label, size (sm/md/lg), error, helper, required, icon (boolean)
+- Menggunakan flatpickr 4.6.13 (CDN: jsdelivr)
+- Locale: Indonesia dengan nama bulan/hari lokal
+- Format display: dd/mm/yyyy (user-facing), ISO date format untuk backend
+- Styling: 100% custom via CSS (none of flatpickr default theme)
+  - Calendar: bg-surface-card, border-line, shadow-modal tokens
+  - Days: hover → brand-50, selected → brand-600, today border brand-600
+  - Weekdays: bg-surface-sunken, text-ink-muted
+  - Disabled/prev/next: text-ink-muted opacity-50
+- Fallback tanpa-JS: `readonly` + native browser date picker (input[type=date])
+- CLAUDE.md diupdate: CDN exception untuk date picker library di rule #11 & Larangan Keras #2
+  - Batasan: hanya untuk library vanilla-JS ringan (non-jQuery), khusus date picker feature
+  - Semua aset lain tetap wajib self-host
+- Demo di styleguide: 3 contoh (default md, sm, lg + error + icon)
+- CSS budget: 12.46 KB → 12.54 KB gzip ✅ (masih under 30 KB)
 
 ---
 
