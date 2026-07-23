@@ -3,6 +3,16 @@
 return [
     'sidebar' => [
         ['label' => 'Dashboard', 'icon' => 'chart-bar', 'url' => '/styleguide/layouts/sidebar', 'active' => true],
+        [
+            'label' => 'Laporan',
+            'icon' => 'chart-line',
+            'url' => '#',
+            'children' => [
+                ['label' => 'Laporan Bulanan', 'icon' => 'calendar', 'url' => '#'],
+                ['label' => 'Laporan Tahunan', 'icon' => 'calendar-event', 'url' => '#'],
+                ['label' => 'Laporan Custom', 'icon' => 'settings', 'url' => '#'],
+            ],
+        ],
         ['label' => 'Transaksi', 'icon' => 'receipt-2', 'url' => '#'],
         ['label' => 'Kartu', 'icon' => 'credit-card', 'url' => '#'],
         ['label' => 'Pengaturan', 'icon' => 'settings', 'url' => '#'],
@@ -23,7 +33,16 @@ return [
             'icon' => 'wallet',
             'sidebar' => [
                 ['label' => 'Dashboard', 'icon' => 'chart-bar', 'url' => '/styleguide/layouts/mix?modul=keuangan', 'active' => true],
-                ['label' => 'Transaksi', 'icon' => 'receipt-2', 'url' => '#'],
+                [
+                    'label' => 'Transaksi',
+                    'icon' => 'receipt-2',
+                    'url' => '#',
+                    'children' => [
+                        ['label' => 'Semua Transaksi', 'icon' => 'list', 'url' => '#'],
+                        ['label' => 'Transaksi Pending', 'icon' => 'clock', 'url' => '#'],
+                        ['label' => 'Laporan Bulanan', 'icon' => 'calendar', 'url' => '#'],
+                    ],
+                ],
                 ['label' => 'Kartu', 'icon' => 'credit-card', 'url' => '#'],
             ],
         ],

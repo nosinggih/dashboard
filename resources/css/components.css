@@ -694,6 +694,54 @@
   .c-sidebar-nav__label {
     @apply truncate;
   }
+  .c-sidebar-nav__group {
+    @apply relative;
+  }
+  .c-sidebar-nav__item[type="button"] {
+    @apply cursor-pointer border-none bg-none text-left;
+  }
+  .c-sidebar-nav__item.is-parent-active {
+    @apply text-brand-700;
+  }
+  .c-sidebar-nav__chevron {
+    @apply transition-transform duration-fast ease-standard;
+  }
+  /* Accordion submenu — hanya visible di full-width */
+  .c-sidebar-nav__submenu {
+    @apply flex flex-col gap-1 border-l-2 border-line pl-2 ml-2 mt-1;
+  }
+  .c-sidebar-nav__submenu-item {
+    @apply relative flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium text-ink-soft transition-colors duration-fast ease-standard hover:bg-surface-sunken hover:text-ink;
+  }
+  .c-sidebar-nav__submenu-item.is-active {
+    @apply bg-brand-50 text-brand-700;
+  }
+  .c-sidebar-nav__submenu-item.is-active::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: -8px;
+    width: 2px;
+    border-radius: 9999px;
+    background-color: var(--color-brand-600);
+  }
+  /* Flyout menu — hanya visible saat sidebar collapsed */
+  .c-sidebar-nav__flyout {
+    @apply hidden absolute left-full top-0 z-50 flex-col gap-1 ml-2 w-[200px] rounded-md border border-line bg-surface-card p-1 shadow-modal;
+  }
+  .c-shell__sidebar.is-collapsed .c-sidebar-nav__submenu {
+    @apply lg:hidden;
+  }
+  .c-shell__sidebar.is-collapsed .c-sidebar-nav__flyout {
+    @apply lg:flex;
+  }
+  .c-sidebar-nav__flyout-item {
+    @apply flex items-center gap-2 rounded px-3 py-2 text-xs text-ink-soft transition-colors duration-fast hover:bg-surface-sunken hover:text-ink;
+  }
+  .c-sidebar-nav__flyout-item.is-active {
+    @apply bg-brand-50 text-brand-700 font-medium;
+  }
 
   /* ===== TOPBAR (layout app-topbar & level-1 app-mix) ===== */
   .c-topbar {

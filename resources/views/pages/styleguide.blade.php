@@ -554,6 +554,20 @@
             </x-ui.carousel>
         </section>
 
+        {{-- ===== NAVIGASI ===== --}}
+        <section class="mb-14" aria-labelledby="section-nav">
+            <h2 id="section-nav" class="text-h2 font-display text-ink mb-1">Navigasi Sidebar</h2>
+            <p class="text-sm text-ink-soft mb-6">
+                Sidebar mendukung submenu (accordion). Item parent dengan <code>children</code> akan menampilkan:
+                <br />• <strong>Full-width:</strong> chevron indikator, expand/collapse accordion dengan transisi smooth.
+                <br />• <strong>Collapsed (72px):</strong> flyout panel di sisi kanan ikon saat hover/klik.
+                <br />Item aktif di-highlight dengan background brand-50 + teks brand-700 + garis kiri 3px.
+            </p>
+            <p class="text-sm text-ink-soft mb-6">
+                Buka preview layout untuk melihat submenu dalam aksi — coba expand item "Laporan" di sidebar.
+            </p>
+        </section>
+
         {{-- ===== LAYOUT ===== --}}
         <section class="mb-14" aria-labelledby="section-layout">
             <h2 id="section-layout" class="text-h2 font-display text-ink mb-1">Layout</h2>
