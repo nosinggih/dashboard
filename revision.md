@@ -203,15 +203,15 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 - Kontrak prop selaras `input.blade.php`: `label`, `helper`, `error`, `size` (sm/md/lg).
 
 ### Dependensi baru & perubahan aturan
-- **Library:** flatpickr (atau sekelas — vanilla JS, tanpa jQuery), dimuat via **CDN**.
+- **Library:** air-datepicker.js (vanilla JS, tanpa jQuery), dimuat via **CDN**.
 - **Perubahan `CLAUDE.md`** (bagian "Aturan Absolut → Performa & Kompatibilitas", item #11, dan "Larangan Keras" #2): tambah butir pengecualian baru, redaksi draft:
   > *"Pengecualian self-host: date picker boleh memuat library vanilla-JS ringan (non-jQuery) via CDN, khusus untuk fitur date picker. Semua aset/library lain (font, ikon, Alpine.js, Chart.js, dst) tetap wajib self-host — pengecualian ini tidak berlaku untuk komponen lain."*
 - Ini adalah keputusan eksplisit dari user (bukan pelanggaran diam-diam) — dicatat di sini agar berjejak saat implementasi & review berikutnya.
+- **Catatan migrasi:** implementasi awal memakai flatpickr, tapi di-reset dan diganti ke air-datepicker.js karena air-datepicker mendukung theming native lewat CSS custom property (`--adp-*`), lebih mudah diselaraskan ke design token tanpa perlu `!important` di hampir semua property untuk memenangkan cascade.
 
 ### Komponen/file yang terlibat
-- `resources/views/components/ui/input-date.blade.php` — baru
-- `resources/js/modules/date-picker.js` — baru (init flatpickr, konfigurasi locale ID, wiring ke `[data-js="input-date"]`)
-- `resources/views/layouts/*.blade.php` atau `app.blade.php` head — tag `<script src="https://cdn.../flatpickr...">` (CDN, bukan bundle Vite)
+- `resources/views/components/ui/input-date.blade.php` — baru, inisialisasi air-datepicker inline di `@push('scripts')`
+- `resources/css/components.css` — override `.air-datepicker`, `.air-datepicker-cell`, `.air-datepicker-nav` via CSS variable `--adp-*` + token
 - `CLAUDE.md` — update aturan (lihat di atas)
 
 ### Definition of Done
@@ -221,25 +221,26 @@ Form input tanggal yang lebih baik dari `<input type="date">` native (tampilan t
 - [x] `CLAUDE.md` sudah diperbarui dengan butir pengecualian CDN yang jelas dan sempit ruang lingkupnya
 - [x] Popover ter-styling penuh via token (tidak ada warna/shadow bawaan library yang bocor)
 
-### Status: ✅ SELESAI (Commit: f000c6c)
+### Status: ✅ SELESAI (Commit: f000c6c → direset & diganti library di f648705)
 
-**Implementasi detail:**
-- Komponen baru: `resources/views/components/ui/input-date.blade.php`
+**Implementasi final (air-datepicker.js):**
+- Komponen: `resources/views/components/ui/input-date.blade.php`
 - Props: label, size (sm/md/lg), error, helper, required, icon (boolean)
-- Menggunakan flatpickr 4.6.13 (CDN: jsdelivr)
-- Locale: Indonesia dengan nama bulan/hari lokal
-- Format display: dd/mm/yyyy (user-facing), ISO date format untuk backend
-- Styling: 100% custom via CSS (none of flatpickr default theme)
-  - Calendar: bg-surface-card, border-line, shadow-modal tokens
-  - Days: hover → brand-50, selected → brand-600, today border brand-600
-  - Weekdays: bg-surface-sunken, text-ink-muted
-  - Disabled/prev/next: text-ink-muted opacity-50
+- Menggunakan air-datepicker@3.5.3 (CDN: jsdelivr)
+- Locale: Indonesia — days, daysShort, daysMin, months, monthsShort, today, clear, firstDay (Senin)
+- Format display: `dd/MM/yyyy` (token syntax air-datepicker)
+- Styling: override via CSS custom property native `--adp-*` di `components.css`, dipetakan ke token design system
+  - `--adp-background-color` → surface-card, `--adp-border-radius` → radius-lg
+  - Cell hover → brand-50, selected → brand-600/700, in-range → brand-100
+  - Nav & day-name → text-muted/text-primary token
 - Fallback tanpa-JS: `readonly` + native browser date picker (input[type=date])
 - CLAUDE.md diupdate: CDN exception untuk date picker library di rule #11 & Larangan Keras #2
   - Batasan: hanya untuk library vanilla-JS ringan (non-jQuery), khusus date picker feature
   - Semua aset lain tetap wajib self-host
 - Demo di styleguide: 3 contoh (default md, sm, lg + error + icon)
-- CSS budget: 12.46 KB → 12.54 KB gzip ✅ (masih under 30 KB)
+- CSS budget akhir: 12.55 KB gzip ✅ (masih jauh under 30 KB)
+
+**Riwayat migrasi:** Implementasi awal (commit `f000c6c`) memakai flatpickr dengan override CSS inline `<style>` + `@apply` yang ternyata tidak diproses PostCSS (bug, diperbaiki di `b36286f`). Atas permintaan user, seluruh kustomisasi flatpickr direset dan diganti total ke air-datepicker.js (commit `f648705`) karena dukungan theming CSS variable native yang lebih bersih.
 
 ---
 
