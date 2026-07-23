@@ -152,11 +152,16 @@
                 </div>
 
                 <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Ikon &amp; State</p>
-                <div class="flex flex-wrap items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3 mb-6">
                     <x-ui.button icon="wallet">Dengan ikon</x-ui.button>
                     <x-ui.button icon-right="chevron-down">Ikon kanan</x-ui.button>
                     <x-ui.button :loading="true">Menyimpan…</x-ui.button>
                     <x-ui.button disabled>Disabled</x-ui.button>
+                </div>
+
+                <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Gradient (opsional)</p>
+                <div class="flex flex-wrap items-center gap-3">
+                    <x-ui.button variant="primary-gradient">Primary Gradient</x-ui.button>
                 </div>
             </div>
         </section>
@@ -255,20 +260,58 @@
                     <p class="text-body text-ink-soft">Border saja, untuk area padat/berdempetan.</p>
                 </x-ui.card>
             </div>
+
+            <p class="text-sm text-ink-soft mb-4 mt-8">Stat card dengan aksen gradient (opsional) — tetap semantik finansial:</p>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <x-ui.card variant="stat" gradient="positive" label="Pemasukan" value="Rp 12.800.000">
+                    <x-slot:trend>
+                        <x-ui.trend direction="up" value="+8,2%" />
+                    </x-slot:trend>
+                </x-ui.card>
+
+                <x-ui.card variant="stat" gradient="negative" label="Pengeluaran" value="Rp 9.350.000">
+                    <x-slot:trend>
+                        <x-ui.trend direction="down" value="−3,1%" />
+                    </x-slot:trend>
+                </x-ui.card>
+
+                <x-ui.card variant="stat" gradient="warning" label="Pending" value="Rp 1.450.000">
+                    <x-slot:trend>
+                        <x-ui.trend direction="down" value="−5%" />
+                    </x-slot:trend>
+                </x-ui.card>
+
+                <x-ui.card variant="stat" gradient="info" label="Target" value="Rp 50.000.000">
+                    <x-slot:trend>
+                        <x-ui.trend direction="up" value="+95%" />
+                    </x-slot:trend>
+                </x-ui.card>
+            </div>
         </section>
 
         {{-- ===== BADGE ===== --}}
         <section class="mb-14" aria-labelledby="section-badge">
             <h2 id="section-badge" class="text-h2 font-display text-ink mb-1">Badge</h2>
-            <p class="text-sm text-ink-soft mb-6">Selalu bg muted + teks pekat + dot, bukan warna teks tunggal.</p>
+            <p class="text-sm text-ink-soft mb-6">Selalu bg muted + teks pekat + dot, bukan warna teks tunggal. Varian gradient opsional untuk aksen visual lebih kuat.</p>
 
-            <div class="flex flex-wrap items-center gap-3 rounded-lg border border-line bg-surface-card p-6 shadow-card">
-                <x-ui.badge variant="positive">Lunas</x-ui.badge>
-                <x-ui.badge variant="negative">Jatuh tempo</x-ui.badge>
-                <x-ui.badge variant="warning">Pending</x-ui.badge>
-                <x-ui.badge variant="info">Info</x-ui.badge>
-                <x-ui.badge variant="neutral">Draft</x-ui.badge>
-                <x-ui.badge variant="positive" size="sm">Small</x-ui.badge>
+            <div class="rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Varian solid</p>
+                <div class="flex flex-wrap items-center gap-3 mb-6">
+                    <x-ui.badge variant="positive">Lunas</x-ui.badge>
+                    <x-ui.badge variant="negative">Jatuh tempo</x-ui.badge>
+                    <x-ui.badge variant="warning">Pending</x-ui.badge>
+                    <x-ui.badge variant="info">Info</x-ui.badge>
+                    <x-ui.badge variant="neutral">Draft</x-ui.badge>
+                    <x-ui.badge variant="positive" size="sm">Small</x-ui.badge>
+                </div>
+
+                <p class="text-xs uppercase tracking-wide text-ink-muted mb-3">Varian gradient (opsional)</p>
+                <div class="flex flex-wrap items-center gap-3">
+                    <x-ui.badge variant="positive-gradient">Lunas</x-ui.badge>
+                    <x-ui.badge variant="negative-gradient">Jatuh tempo</x-ui.badge>
+                    <x-ui.badge variant="warning-gradient">Pending</x-ui.badge>
+                    <x-ui.badge variant="info-gradient">Info</x-ui.badge>
+                </div>
             </div>
         </section>
 

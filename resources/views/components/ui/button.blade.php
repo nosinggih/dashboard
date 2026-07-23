@@ -13,6 +13,7 @@ $variantClass = match ($variant) {
     'ghost' => 'c-btn--ghost',
     'danger' => 'c-btn--danger',
     'link' => 'c-btn--link',
+    'primary-gradient' => 'c-btn--primary-gradient',
     default => 'c-btn--primary',
 };
 

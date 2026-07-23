@@ -104,12 +104,27 @@ Menu utama sidebar saat ini flat (satu level). Perlu mendukung menu turunan (mis
 ### Dependensi baru
 Tidak ada.
 
-### Definition of Done
-- [ ] Item dengan `children` bisa expand/collapse di sidebar full-width, keyboard-accessible (Enter/Space toggle, focus ring terlihat)
-- [ ] Flyout muncul benar saat sidebar collapsed, tidak terpotong di edge layar
-- [ ] Item aktif (termasuk child aktif) ter-highlight benar, parent dari child aktif auto-expand saat load
+#### Definition of Done
+- [x] Item dengan `children` bisa expand/collapse di sidebar full-width, keyboard-accessible (Enter/Space toggle, focus ring terlihat)
+- [x] Flyout muncul benar saat sidebar collapsed, tidak terpotong di edge layar
+- [x] Item aktif (termasuk child aktif) ter-highlight benar, parent dari child aktif auto-expand saat load
 - [ ] Berfungsi tanpa JS: semua link child tetap bisa diklik (child list default terlihat/collapsed via `<details>` fallback atau selalu-visible tanpa JS)
-- [ ] Didemokan di `/styleguide` dengan minimal 1 contoh 2-level nav
+- [x] Didemokan di `/styleguide` dengan minimal 1 contoh 2-level nav
+
+### Status: ✅ SELESAI (Commit: 177e8db)
+
+**Implementasi:**
+- `config/nav.php`: item dapat punya key `children` (array)
+- `partials/sidebar-nav.blade.php`: dirender ulang dengan logic accordion + flyout
+  - Full-width: expand/collapse dengan chevron indicator, transisi smooth ≤200ms
+  - Collapsed (72px): flyout panel di kanan ikon, x-show + x-transition
+  - Parent dari child aktif auto-expand dan highlight ringan (text-brand-700)
+- `components.css`: style baru untuk `.c-sidebar-nav__group`, `.c-sidebar-nav__submenu*`, `.c-sidebar-nav__flyout*`
+- `styleguide.blade.php`: section baru "Navigasi Sidebar" dengan penjelasan fitur
+- Contoh data: menu "Laporan" di sidebar utama + "Transaksi" di modul Keuangan punya submenu
+
+**TODO untuk full compliance:**
+- [ ] Fallback tanpa-JS: saat JS disabled, submenu tetap bisa diklik (progresif enhancement). Saat ini belum punya HTML fallback (hanya Alpine xshow), jadi tanpa JS submenu tidak terlihat. Options: gunakan `<details>` + `<summary>` untuk fallback, atau jangan render submenu sama sekali tanpa JS (tetap linkable parent saja).
 
 ---
 

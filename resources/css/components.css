@@ -29,6 +29,9 @@
   .c-btn--danger {
     @apply bg-negative text-white hover:brightness-95;
   }
+  .c-btn--primary-gradient {
+    @apply bg-brand-gradient text-white hover:brightness-95;
+  }
   .c-btn--link {
     @apply h-auto rounded-none px-0 py-0 text-brand-600 underline-offset-4 hover:underline;
   }
@@ -159,6 +162,22 @@
   .c-card__stat-trend {
     @apply mt-2;
   }
+  /* Stat card gradient accent variants */
+  .c-card--stat-positive-gradient {
+    @apply relative bg-gradient-to-br from-positive-bg to-surface-card;
+  }
+  .c-card--stat-negative-gradient {
+    @apply relative bg-gradient-to-br from-negative-bg to-surface-card;
+  }
+  .c-card--stat-warning-gradient {
+    @apply relative bg-gradient-to-br from-warning-bg to-surface-card;
+  }
+  .c-card--stat-info-gradient {
+    @apply relative bg-gradient-to-br from-info-bg to-surface-card;
+  }
+  .c-card--stat-brand-gradient {
+    @apply relative bg-gradient-to-br from-brand-100 to-surface-card;
+  }
 
   /* ===== TREND ===== */
   .c-trend {
@@ -195,6 +214,18 @@
   }
   .c-badge--neutral {
     @apply bg-surface-sunken text-ink-soft;
+  }
+  .c-badge--positive-gradient {
+    @apply bg-positive-gradient text-white;
+  }
+  .c-badge--negative-gradient {
+    @apply bg-negative-gradient text-white;
+  }
+  .c-badge--warning-gradient {
+    @apply bg-warning-gradient text-white;
+  }
+  .c-badge--info-gradient {
+    @apply bg-info-gradient text-white;
   }
   .c-badge__dot {
     @apply h-1.5 w-1.5 shrink-0 rounded-full bg-current;

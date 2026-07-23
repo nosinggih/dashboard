@@ -64,6 +64,13 @@ export default {
       transitionTimingFunction: {
         standard: 'var(--ease-standard)',
       },
+      backgroundImage: {
+        'positive-gradient': 'var(--gradient-positive)',
+        'negative-gradient': 'var(--gradient-negative)',
+        'warning-gradient':  'var(--gradient-warning)',
+        'info-gradient':     'var(--gradient-info)',
+        'brand-gradient':    'var(--gradient-brand)',
+      },
     },
   },
   plugins: [forms],

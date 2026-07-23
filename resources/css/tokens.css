@@ -29,6 +29,13 @@
   --color-warning:  #B07A2A;  --color-warning-bg:  #FBF3E4;
   --color-info:     #3C6EAF;  --color-info-bg:     #EBF2FA;
 
+  /* ===== SEMANTIC GRADIENT (varian visual, tetap patuhi aturan semantic finansial) ===== */
+  --gradient-positive: linear-gradient(135deg, #2F8A56 0%, #1F6E44 100%);
+  --gradient-negative: linear-gradient(135deg, #C24A4A 0%, #A23838 100%);
+  --gradient-warning:  linear-gradient(135deg, #B07A2A 0%, #8F621E 100%);
+  --gradient-info:     linear-gradient(135deg, #3C6EAF 0%, #2E578C 100%);
+  --gradient-brand:    linear-gradient(135deg, #2E7D74 0%, #1D554E 100%);
+
   /* ===== OVERLAY (scrim modal — RGBA langsung, bukan opacity modifier,
      agar tidak butuh color-mix() yang tak didukung Safari 12) ===== */
   --color-overlay: rgba(16, 49, 45, .5);

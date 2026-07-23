@@ -7,9 +7,13 @@
 @php
 $variantClass = match ($variant) {
     'positive' => 'c-badge--positive',
+    'positive-gradient' => 'c-badge--positive-gradient',
     'negative' => 'c-badge--negative',
+    'negative-gradient' => 'c-badge--negative-gradient',
     'warning' => 'c-badge--warning',
+    'warning-gradient' => 'c-badge--warning-gradient',
     'info' => 'c-badge--info',
+    'info-gradient' => 'c-badge--info-gradient',
     default => 'c-badge--neutral',
 };
 

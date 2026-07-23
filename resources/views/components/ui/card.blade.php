@@ -2,6 +2,7 @@
     'variant' => 'default',
     'label' => null,
     'value' => null,
+    'gradient' => null,
 ])
 
 @php
@@ -10,9 +11,21 @@ $variantClass = match ($variant) {
     'stat' => 'c-card--stat',
     default => 'c-card--default',
 };
+
+$gradientClass = '';
+if ($variant === 'stat' && $gradient) {
+    $gradientClass = match ($gradient) {
+        'positive' => 'c-card--stat-positive-gradient',
+        'negative' => 'c-card--stat-negative-gradient',
+        'warning' => 'c-card--stat-warning-gradient',
+        'info' => 'c-card--stat-info-gradient',
+        'brand' => 'c-card--stat-brand-gradient',
+        default => '',
+    };
+}
 @endphp
 
-<div {{ $attributes->merge(['class' => "c-card {$variantClass}"]) }}>
+<div {{ $attributes->merge(['class' => "c-card {$variantClass} {$gradientClass}"]) }}>
     @if ($variant === 'stat')
         @if ($label)
             <p class="c-card__stat-label">{{ $label }}</p>
