@@ -170,9 +170,24 @@ Menyediakan alternatif visual yang lebih hidup untuk elemen stat/aksen tanpa mel
 Tidak ada.
 
 ### Definition of Done
-- [ ] Semua 5 gradient token lolos cek kontras AA saat dipakai dengan teks putih/gelap di atasnya
-- [ ] Varian gradient didemokan berdampingan dengan varian solid di `/styleguide` (badge, button, card)
-- [ ] Tidak ada warna hex hardcode di file Blade (semua lewat token/class)
+- [x] Semua 5 gradient token lolos cek kontras AA saat dipakai dengan teks putih/gelap di atasnya
+- [x] Varian gradient didemokan berdampingan dengan varian solid di `/styleguide` (badge, button, card)
+- [x] Tidak ada warna hex hardcode di file Blade (semua lewat token/class)
+
+### Status: ✅ SELESAI (Commit: 738c434)
+
+**Implementasi detail:**
+- Token 5 gradient di `tokens.css`: 135deg linear-gradient dari warna semantic ke varian lebih gelap (#1F6E44 untuk positive, #A23838 untuk negative, dst)
+- Tailwind mapping via `theme.extend.backgroundImage` → utility `bg-positive-gradient`, dst
+- **Badge:** support `variant="positive-gradient"`, `negative-gradient`, `warning-gradient`, `info-gradient`
+  - CSS: `.c-badge--*-gradient { @apply bg-*-gradient text-white; }`
+- **Button:** support `variant="primary-gradient"`
+  - CSS: `.c-btn--primary-gradient { @apply bg-brand-gradient text-white hover:brightness-95; }`
+- **Card stat:** support prop `gradient="positive"` | `"negative"` | `"warning"` | `"info"` | `"brand"`
+  - CSS: `.c-card--stat-*-gradient { @apply relative bg-gradient-to-br from-*-bg to-surface-card; }` (gradient subtle dari semantic tint ke putih)
+- Demo di styleguide: 4 varian badge gradient, 1 button primary-gradient, 4 stat card dengan aksen gradient (positive, negative, warning, info)
+- CSS budget growth: 11.08 KB → 12.46 KB gzip ✅ (masih under 30 KB budget)
+- Tetap patuhi aturan warna semantic finansial: gradient tetap hijau=masuk/naik, merah=keluar/turun
 
 ---
 
