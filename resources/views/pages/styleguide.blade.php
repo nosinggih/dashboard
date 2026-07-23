@@ -674,5 +674,7 @@
             </div>
         </section>
     </div>
+
+    @stack('scripts')
 </body>
 </html>
