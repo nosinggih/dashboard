@@ -307,48 +307,81 @@ Tidak ada token baru — reuse `--color-overlay`, `--color-brand-500`.
 Tidak ada.
 
 ### Definition of Done
-- [ ] Top bar & overlay bisa dipicu independen via API JS sederhana (`$store.loadingBar.start()/done()`)
-- [ ] Overlay mengunci fokus & scroll body selama aktif, restore fokus saat ditutup
-- [ ] `prefers-reduced-motion` dihormati (indeterminate bar jadi statis/tanpa animasi looping berlebihan)
-- [ ] Didemokan di `/styleguide` dengan tombol simulasi fetch (setTimeout)
+- [x] Top bar & overlay bisa dipicu independen via API JS sederhana (`$store.loadingBar.start()/done()`)
+- [x] Overlay mengunci fokus & scroll body selama aktif, restore fokus saat ditutup
+- [x] `prefers-reduced-motion` dihormati (indeterminate bar jadi statis/tanpa animasi looping berlebihan)
+- [x] Didemokan di `/styleguide` dengan tombol simulasi fetch (setTimeout)
+
+### Status: ✅ SELESAI (2026-07-23)
+
+**Implementasi:**
+- `resources/views/components/ui/loading-bar.blade.php` — bar tipis `fixed top-0`, `x-show="$store.loadingBar.active"`, sweep indeterminate via `@keyframes c-loading-bar-sweep` (translateX loop 1.1s)
+- `resources/views/components/ui/loading-overlay.blade.php` — backdrop `bg-overlay` (token existing) + panel `shadow-modal` + spinner (`animate-spin` Tailwind), reuse `x-focus-trap` directive dari modal (lock scroll body + trap fokus otomatis), `role="alertdialog"` + `aria-live="polite"`, pesan dinamis lewat `$store.loadingOverlay.message`
+- `resources/js/app.js` — dua Alpine store baru: `loadingBar` (`active`, `start()`, `done()`) dan `loadingOverlay` (`active`, `message`, `start(message)`, `done()`)
+- CSS baru: `.c-loading-bar*`, `.c-loading-overlay*` di `components.css`, semua token-based
+- `prefers-reduced-motion`: otomatis patuh lewat guard global di `base.css` (`animation-duration: 0.01ms !important; animation-iteration-count: 1 !important`) — tidak perlu override khusus, sweep bar jadi statis/sekali-jalan
+- Demo di `/styleguide` section "Loading Ringan": 3 tombol simulasi (top bar saja, overlay saja, keduanya bersamaan) via `setTimeout`, komponen di-mount sekali di `<body>` styleguide
+- Dependensi: nihil
 
 ---
 
-## 6. Loading Berat / Page Transition (Shape Morphing)
+## 6. Loading Berat / Page Transition — Splash Screen SVG (revisi 2026-07-23)
 
 ### Tujuan
 Transisi visual signifikan untuk momen besar: pertama kali membuka aplikasi, sukses login, sukses logout, dan aksi major lain — memberi kesan "sesuatu besar sedang terjadi", beda dari loading ringan sehari-hari.
 
-### Desain & perilaku
-- `<x-ui.page-transition>`: overlay full-screen, animasi shape-morphing (mis. `clip-path`/`mask` blob yang berubah bentuk) dipadu transisi warna brand.
-- Durasi 400–600ms — **melebihi batas 200ms standar secara sengaja** (lihat perubahan aturan di bawah).
-- Dipicu HANYA pada daftar event eksplisit: first load aplikasi, login sukses, logout sukses, dan aksi major lain yang didefinisikan secara eksplisit saat implementasi (bukan dipicu generic di semua navigasi, agar tidak mengganggu penggunaan sehari-hari).
-- **Wajib** fallback `prefers-reduced-motion`: shape-morph diganti fade sederhana ≤200ms (transisi state tetap ada, tapi minimal, tidak dihilangkan total).
+> **Revisi 2026-07-23**: Desain awal (shape-morph `clip-path` sekali-jalan 550ms) diganti total atas permintaan eksplisit user menjadi **splash screen SVG abstrak** dengan shape looping. Rasional & implementasi final ada di bawah; desain awal didokumentasikan di riwayat commit untuk jejak keputusan.
+
+### Desain & perilaku (final)
+- `<x-ui.page-transition>`: overlay full-screen berisi **SVG abstrak** (bukan foto/ikon literal) — beberapa jenis shape (blob path, lingkaran besar/kecil, persegi rounded, segitiga, titik) dalam berbagai ukuran, disusun sebagai komposisi non-representasional.
+- Warna: seluruhnya dari palet brand teal design system (`--color-brand-50/100/300/500/700/900`) — tidak ada warna semantic (hijau/merah/kuning/biru finansial) dipakai untuk dekorasi, sesuai CLAUDE.md #8.
+- Tiap shape punya animasi loop sendiri (pulse/float/rotate/fade-scale) berdurasi **2–4 detik**, `animation-iteration-count: infinite` — bukan animasi sekali-jalan. Karena loop terus berjalan selama overlay aktif, splash otomatis "menyesuaikan" jika proses sungguhan berjalan lebih lama dari satu siklus animasi (kriteria "bisa looping apabila ternyata lebih lama").
+- Kontrol overlay: `$store.pageTransition.start()` / `.done()` — pola identik dengan `loadingOverlay` (item 5), bukan `setTimeout` tetap. Ini yang membuat splash otomatis looping mengikuti durasi proses asli, alih-alih durasi fix.
+- Dipicu HANYA pada titik eksplisit: first load aplikasi, login sukses, logout sukses, dan aksi major lain yang didefinisikan saat implementasi — bukan generic di semua navigasi.
+- Overlay mengunci fokus & scroll body selama aktif (reuse `x-focus-trap` directive dari modal/loading-overlay), `role="status"` + `aria-live="polite"` + teks `sr-only` untuk screen reader.
+- `prefers-reduced-motion`: ditangani oleh guard global di `base.css` (`animation-duration: .01ms !important` pada `*`) — shape berhenti bergerak (hampir statis) tanpa perlu override khusus, konsisten dengan komponen loading lain.
 
 ### Perubahan aturan `design-system-finance.md`
-Tambah baris baru di tabel micro-interaction (bab 11), kategori baru:
-
-| Elemen | Perilaku | Durasi |
-|---|---|---|
-| Transisi Major (first load / login / logout / aksi besar) | Shape-morph full-screen + transisi warna brand | 400–600ms — **pengecualian eksplisit dari batas 200ms standar**, hanya untuk transisi state besar, bukan micro-interaction biasa. Wajib fallback fade ≤200ms saat `prefers-reduced-motion`. |
-
-Catatan tambahan di bab 11: daftar "Dilarang" (parallax, animasi loop tanpa akhir, dst) tetap berlaku — shape-morph ini adalah **animasi sekali jalan** (bukan loop), jadi tidak melanggar larangan tersebut.
+Baris tabel micro-interaction (bab 11) diperbarui: kategori "Transisi Major" sekarang menjelaskan splash SVG loop 2–4 detik (dipicu di titik eksplisit, bukan navigasi biasa), bukan lagi shape-morph 400–600ms sekali-jalan.
 
 ### Komponen/file yang terlibat
-- `resources/views/components/ui/page-transition.blade.php` — baru
-- `resources/js/app.js` — `Alpine.store('pageTransition', {...})`, trigger di titik login/logout/first-load
-- `resources/css/components.css` — keyframes shape-morph, class `.c-page-transition`
-- `design-system-finance.md` — update tabel bab 11 (lihat di atas)
+- `resources/views/components/ui/page-transition.blade.php` — SVG inline (path blob, circle, rect, polygon, dot), `fill-brand-*` via Tailwind
+- `resources/js/app.js` — `Alpine.store('pageTransition', { active, start(), done() })`
+- `resources/css/components.css` — keyframes `c-page-transition-pulse/float/rotate/fade-pulse`, class `.c-page-transition*`
+- `design-system-finance.md` — update tabel bab 11
 
 ### Dependensi baru
-Tidak ada — murni CSS + Alpine, self-host, tidak melanggar aturan CDN (beda dari item 3).
+Tidak ada — SVG inline + CSS + Alpine, self-host, tidak melanggar aturan CDN.
 
 ### Definition of Done
-- [ ] Transisi hanya muncul di 3-4 titik yang didefinisikan eksplisit, tidak di setiap navigasi biasa
-- [ ] `prefers-reduced-motion` menghasilkan fade sederhana ≤200ms, bukan shape-morph penuh
-- [ ] `design-system-finance.md` bab 11 sudah diperbarui dengan baris pengecualian baru
-- [ ] Total durasi tidak mengganggu UX (tidak memblokir interaksi lebih dari 600ms)
-- [ ] Didemokan di `/styleguide` dengan tombol simulasi tiap trigger (first load, login, logout)
+- [x] Tema abstrak (blob/shape geometris, bukan ikon literal atau foto)
+- [x] Format SVG inline, bukan GIF/video
+- [x] Minimal 4 jenis shape berbeda (blob, lingkaran, persegi, segitiga, titik) dalam berbagai ukuran
+- [x] Ukuran shape mengikuti 3 tingkatan eksplisit relatif ke layar: 70% / 40% / 20%
+- [x] Semua warna dari token brand guideline (`--color-brand-*`), tidak ada hex hardcode, tidak ada warna semantic dipakai dekoratif
+- [x] Siklus animasi tiap shape 2–4 detik, loop selama overlay aktif (menyesuaikan proses yang lebih lama dari satu siklus)
+- [x] Gerak/exaggeration terasa hidup — translate/scale/rotate beramplitudo besar, bukan sekadar fade halus
+- [x] Transisi hanya muncul di titik eksplisit (first load, login, logout), tidak di setiap navigasi biasa
+- [x] `prefers-reduced-motion` dihormati (lewat guard global)
+- [x] Didemokan di `/styleguide` dengan tombol simulasi durasi berbeda (termasuk durasi > 1 siklus animasi untuk membuktikan looping)
+
+### Status: ✅ SELESAI (revisi kedua, 2026-07-23)
+
+**Implementasi (final, revisi ukuran & gerak):**
+- `page-transition.blade.php`: `<svg viewBox="0 0 100 100">` — koordinat dalam persen langsung dari sisi svg, dan svg-nya sendiri di-render hampir memenuhi layar (`width/height: min(92vw, 92vh)`), sehingga ukuran shape = persentase nyata dari layar:
+  - **70%** — 1 blob path besar (`fill-brand-700`, r≈35 dari viewBox 100), jangkar visual
+  - **40%** — 2 shape menengah: lingkaran (`fill-brand-300`, r=20) & persegi rounded (`fill-brand-500`, ~28×28, diagonal≈40)
+  - **20%** — 3 shape kecil: segitiga (`fill-brand-100`, lebar 20), 2 titik (`fill-brand-50`/`fill-brand-300`, r=10)
+- Gerak dibuat **exaggerated** agar terasa hidup, bukan sekadar breathing halus: shape kecil punya translate/scale/rotate beramplitudo besar relatif ke ukurannya (mis. titik dart ±12–13 unit dari posisi asal, segitiga bounce ±16 unit + rotate ±14deg + scale 0.85→1.3 dengan overshoot), shape menengah drift diagonal + rotasi penuh, shape besar (blob) tetap paling tenang (napas + drift halus) agar hierarki visual tidak kacau — makin kecil shape, makin ekspresif gerakannya, meniru intuisi fisik "benda kecil bergerak lebih lincah"
+- Easing: shape kecil & menengah pakai `cubic-bezier(.34,1.56,.64,1)` (back-overshoot, kesan "bouncy"/hidup), blob & persegi besar tetap `var(--ease-standard)` (kesan bermassa/tenang)
+- `svg` diberi `overflow: visible` supaya gerak beramplitudo besar tidak terpotong tajam di tepi viewBox
+- Semua shape tetap pakai `transform-box: fill-box; transform-origin: center` supaya scale/rotate berputar di titik tengah masing-masing shape
+- Overlay: `bg-brand-900` solid sebagai backdrop, `z-[60]` di atas loading bar/overlay, `Alpine.store('pageTransition')` tetap pola `start()`/`done()` (bukan `setTimeout` tetap) dari revisi sebelumnya
+- Demo di `/styleguide` section "Loading Berat / Splash Screen": 3 tombol durasi berbeda (2.5 detik, 3.5 detik, 6 detik) — tombol terakhir sengaja melebihi siklus animasi terpanjang untuk membuktikan splash tetap looping mulus
+- CSS budget: 13.68 KB gzip ✅ masih jauh di bawah 30 KB budget
+- Dependensi: nihil (SVG inline + CSS + Alpine)
+
+**Riwayat revisi:** Implementasi pertama (viewBox 400×400, container fixed 160–208px, gerak translateY/scale halus ±8–14px) dianggap kurang terasa "hidup" dan ukuran shape tidak proporsional ke layar. Direvisi total ke sistem koordinat persen (viewBox 100×100) + container hampir full-screen + amplitude gerak jauh lebih besar dengan easing overshoot.
 
 ---
 

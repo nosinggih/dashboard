@@ -114,4 +114,36 @@ Alpine.data('selectSearch', ({ options = [], selected = '' } = {}) => ({
     },
 }));
 
+Alpine.store('loadingBar', {
+    active: false,
+    start() {
+        this.active = true;
+    },
+    done() {
+        this.active = false;
+    },
+});
+
+Alpine.store('loadingOverlay', {
+    active: false,
+    message: 'Memuat...',
+    start(message = 'Memuat...') {
+        this.message = message;
+        this.active = true;
+    },
+    done() {
+        this.active = false;
+    },
+});
+
+Alpine.store('pageTransition', {
+    active: false,
+    start() {
+        this.active = true;
+    },
+    done() {
+        this.active = false;
+    },
+});
+
 Alpine.start();

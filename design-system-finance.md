@@ -436,6 +436,7 @@ Tiga layout, satu prinsip: **konten sama, cangkang beda**. Dibuat sebagai 3 Blad
 | Modal buka/tutup | fade + scale 0.98→1, 180ms | orientasi spasial |
 | Skeleton | shimmer pelan | "sedang memuat, bukan rusak" |
 | Input error | teks error muncul + border merah (tanpa shake berlebihan) | "ada yang perlu diperbaiki" |
+| Transisi Major (first load / login / logout / aksi besar) | Splash screen SVG abstrak full-screen (blob, lingkaran, persegi, segitiga, titik — 3 tingkat ukuran relatif layar 70%/40%/20%, warna brand teal, gerak exaggerated agar hidup) | "sesuatu besar sedang terjadi" — tiap shape loop 2–4 detik selama proses berlangsung (`$store.pageTransition.start()`/`.done()`), otomatis menyesuaikan bila proses lebih lama dari satu siklus animasi. Dipicu HANYA di titik eksplisit yang didefinisikan (first load, login, logout), bukan generic di setiap navigasi — loop di sini terikat state loading aktif, bukan dekorasi permanen, jadi tidak melanggar larangan "animasi looping tanpa henti". Dihormati lewat guard global `prefers-reduced-motion`. |
 
 **Dilarang:** parallax, animasi scroll berlebihan, hover yang menggeser layout, animasi looping tanpa henti, konfeti.
 

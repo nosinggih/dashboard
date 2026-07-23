@@ -423,6 +423,108 @@
     @apply px-3 py-2 text-sm text-ink-muted;
   }
 
+  /* ===== LOADING BAR (top, indeterminate) ===== */
+  .c-loading-bar {
+    @apply fixed inset-x-0 top-0 z-50 h-[3px] overflow-hidden bg-transparent;
+  }
+  .c-loading-bar__progress {
+    @apply h-full w-1/3 rounded-full bg-brand-500;
+    animation: c-loading-bar-sweep 1.1s ease-in-out infinite;
+  }
+  @keyframes c-loading-bar-sweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+  }
+
+  /* ===== LOADING OVERLAY (center, lock screen) ===== */
+  .c-loading-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-overlay;
+  }
+  .c-loading-overlay__panel {
+    @apply flex flex-col items-center gap-3 rounded-lg bg-surface-card px-8 py-6 shadow-modal;
+  }
+  .c-loading-overlay__spinner {
+    @apply h-8 w-8 animate-spin rounded-full border-2 border-line border-t-brand-500;
+  }
+  .c-loading-overlay__text {
+    @apply text-sm text-ink;
+  }
+
+  /* ===== PAGE TRANSITION (major, SVG splash screen) ===== */
+  /* Dipicu HANYA di titik eksplisit (first load, login, logout) — bukan tiap navigasi. Lihat design-system-finance.md bab 11 */
+  .c-page-transition {
+    @apply fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-brand-900;
+  }
+  .c-page-transition__svg {
+    /* viewBox 0 0 100 100 → ukuran shape di dalamnya = % langsung dari sisi svg ini, yang sengaja dibuat hampir memenuhi layar */
+    width: min(92vw, 92vh);
+    height: min(92vw, 92vh);
+    overflow: visible;
+  }
+  .c-page-transition__shape {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* 70% — jangkar besar, gerak paling tenang (napas + drift halus) */
+  .c-page-transition__shape--blob {
+    @apply fill-brand-700;
+    animation: c-page-transition-breathe 3.8s var(--ease-standard) infinite;
+  }
+
+  /* 40% — dua shape menengah, drift diagonal + rotasi lebih terasa */
+  .c-page-transition__shape--circle-md {
+    @apply fill-brand-300;
+    opacity: .9;
+    animation: c-page-transition-drift-a 3.2s cubic-bezier(.34,1.56,.64,1) infinite;
+  }
+  .c-page-transition__shape--square-md {
+    @apply fill-brand-500;
+    animation: c-page-transition-drift-b 3.6s var(--ease-standard) infinite;
+  }
+
+  /* 20% — tiga shape kecil, paling ekspresif/melebih-lebihkan gerak supaya terasa hidup */
+  .c-page-transition__shape--triangle-sm {
+    @apply fill-brand-100;
+    animation: c-page-transition-bounce 2.2s cubic-bezier(.34,1.56,.64,1) infinite;
+  }
+  .c-page-transition__shape--dot-sm-1 {
+    @apply fill-brand-50;
+    animation: c-page-transition-dart-a 2s cubic-bezier(.34,1.56,.64,1) infinite;
+  }
+  .c-page-transition__shape--dot-sm-2 {
+    @apply fill-brand-300;
+    animation: c-page-transition-dart-b 2.8s cubic-bezier(.34,1.56,.64,1) infinite .5s;
+  }
+
+  @keyframes c-page-transition-breathe {
+    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(2, -3) scale(1.1) rotate(3deg); }
+  }
+  @keyframes c-page-transition-drift-a {
+    0%, 100% { transform: translate(0, 0) scale(.9); }
+    35% { transform: translate(9, 7) scale(1.15); }
+    70% { transform: translate(-6, 4) scale(1); }
+  }
+  @keyframes c-page-transition-drift-b {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    50% { transform: translate(-8, -6) rotate(180deg) scale(1.12); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+  }
+  @keyframes c-page-transition-bounce {
+    0%, 100% { transform: translate(0, 0) scale(.85) rotate(0deg); }
+    30% { transform: translate(-5, -16) scale(1.3) rotate(-14deg); }
+    60% { transform: translate(4, 6) scale(.95) rotate(10deg); }
+  }
+  @keyframes c-page-transition-dart-a {
+    0%, 100% { opacity: .4; transform: translate(0, 0) scale(.8); }
+    50% { opacity: 1; transform: translate(13, -12) scale(1.35); }
+  }
+  @keyframes c-page-transition-dart-b {
+    0%, 100% { opacity: .4; transform: translate(0, 0) scale(.8); }
+    50% { opacity: 1; transform: translate(-12, -10) scale(1.3); }
+  }
+
   /* ===== TABS ===== */
   .c-tabs__list {
     @apply flex items-center gap-1 border-b border-line;

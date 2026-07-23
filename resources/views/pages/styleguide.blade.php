@@ -7,6 +7,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-surface text-ink">
+    <x-ui.loading-bar />
+    <x-ui.loading-overlay />
+    <x-ui.page-transition />
+
     <div class="mx-auto max-w-screen-2xl px-4 py-10 sm:px-6 lg:px-10">
         <header class="mb-12 border-b border-line pb-8">
             <p class="text-xs font-medium uppercase tracking-wide text-ink-muted">Ledgerly UI</p>
@@ -595,6 +599,51 @@
                         </div>
                     </template>
                 </div>
+            </div>
+        </section>
+
+        {{-- ===== LOADING (top bar & overlay) ===== --}}
+        <section class="mb-14" aria-labelledby="section-loading">
+            <h2 id="section-loading" class="text-h2 font-display text-ink mb-1">Loading Ringan</h2>
+            <p class="text-sm text-ink-soft mb-6">Feedback visual saat fetch data. Top bar untuk update ringan (tidak mengunci halaman), overlay untuk aksi yang mengunci interaksi sampai selesai. Keduanya dikendalikan lewat <code>$store.loadingBar</code> / <code>$store.loadingOverlay</code>, independen satu sama lain.</p>
+
+            <div x-data class="flex flex-wrap gap-3 rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <x-ui.button
+                    variant="secondary"
+                    @click="$store.loadingBar.start(); setTimeout(() => $store.loadingBar.done(), 1800)"
+                >Simulasikan top bar (1.8 detik)</x-ui.button>
+
+                <x-ui.button
+                    variant="secondary"
+                    @click="$store.loadingOverlay.start('Menyimpan transaksi...'); setTimeout(() => $store.loadingOverlay.done(), 1800)"
+                >Simulasikan overlay (1.8 detik)</x-ui.button>
+
+                <x-ui.button
+                    @click="$store.loadingBar.start(); $store.loadingOverlay.start('Memuat data...'); setTimeout(() => { $store.loadingBar.done(); $store.loadingOverlay.done(); }, 1800)"
+                >Simulasikan keduanya</x-ui.button>
+            </div>
+        </section>
+
+        {{-- ===== PAGE TRANSITION (major, SVG splash screen) ===== --}}
+        <section class="mb-14" aria-labelledby="section-page-transition">
+            <h2 id="section-page-transition" class="text-h2 font-display text-ink mb-1">Loading Berat / Splash Screen</h2>
+            <p class="text-sm text-ink-soft mb-6">Splash screen SVG abstrak (blob, lingkaran, persegi, segitiga, titik — berbagai ukuran) untuk momen besar saja: first load, login sukses, logout sukses, atau aksi major lain. Tiap shape memakai warna brand teal (token <code>--color-brand-*</code>) dan animasi loop 2–4 detik — otomatis terus berputar selama <code>$store.pageTransition.active</code> masih <code>true</code>, jadi tetap natural walau proses sungguhan berjalan lebih lama dari siklus animasinya. Kontrol lewat <code>$store.pageTransition.start()</code> / <code>.done()</code>, sama seperti pola loading ringan.</p>
+
+            <div x-data class="flex flex-wrap gap-3 rounded-lg border border-line bg-surface-card p-6 shadow-card">
+                <x-ui.button
+                    variant="secondary"
+                    @click="$store.pageTransition.start(); setTimeout(() => $store.pageTransition.done(), 2500)"
+                >Simulasikan first load (2.5 detik)</x-ui.button>
+
+                <x-ui.button
+                    variant="secondary"
+                    @click="$store.pageTransition.start(); setTimeout(() => $store.pageTransition.done(), 3500)"
+                >Simulasikan login sukses (3.5 detik)</x-ui.button>
+
+                <x-ui.button
+                    variant="secondary"
+                    @click="$store.pageTransition.start(); setTimeout(() => $store.pageTransition.done(), 6000)"
+                >Simulasikan proses lambat, looping (6 detik)</x-ui.button>
             </div>
         </section>
 
